@@ -1,0 +1,45 @@
+{
+  "name": "delay",
+  "version": "0.0.0",
+  "description": "Delay a promise a specified amount of time",
+  "license": "MIT",
+  "repository": "sindresorhus/delay",
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com"
+  },
+  "engines": {
+    "node": ">=0.12.0"
+  },
+  "scripts": {
+    "test": "xo && ava"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "promise",
+    "resolve",
+    "delay",
+    "defer",
+    "wait",
+    "timeout",
+    "settimeout",
+    "event",
+    "loop",
+    "next",
+    "tick",
+    "delay",
+    "timeout"
+  ],
+  "devDependencies": {
+    "ava": "*",
+    "xo": "*"
+  },
+  "xo": {
+    "ignores": [
+      "test.js"
+    ]
+  }
+}
