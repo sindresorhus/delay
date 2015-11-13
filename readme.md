@@ -15,10 +15,16 @@ $ npm install --save delay
 ```js
 const delay = require('delay');
 
+delay(200)
+	.then(() => {
+		// executed after 200 milliseconds
+	});
+
 somePromise()
 	.then(delay(100))
-	.then(() => {
-		// executed after 100 milliseconds
+	.then(result => {
+		// executed 100 milliseconds after somePromise resolves
+		// the result from somePromise is passed through
 	});
 ```
 
