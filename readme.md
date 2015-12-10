@@ -26,6 +26,16 @@ somePromise()
 		// executed 100 milliseconds after somePromise resolves
 		// the result from somePromise is passed through
 	});
+
+// and with Babel and async functions
+async () => {
+	bar();
+
+	await delay(100);
+
+	// executed 100 milliseconds later
+	baz();
+}()
 ```
 
 
