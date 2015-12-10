@@ -35,7 +35,7 @@ async () => {
 
 	// executed 100 milliseconds later
 	baz();
-}()
+}();
 ```
 
 

@@ -35,6 +35,8 @@
   ],
   "devDependencies": {
     "ava": "*",
+    "in-range": "^1.0.0",
+    "time-span": "^1.0.0",
     "xo": "*"
   },
   "xo": {

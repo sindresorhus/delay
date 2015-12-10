@@ -1,17 +1,17 @@
 import test from 'ava';
+import timeSpan from 'time-span';
+import inRange from 'in-range';
 import fn from './';
 
 test('promise', async t => {
-	const date = Date.now();
+	const end = timeSpan();
 	await fn(50);
-	const diff = Date.now() - date;
-	t.true(diff > 30 && diff < 70);
+	t.true(inRange(end(), 30, 70));
 });
 
 test('thunk', async t => {
-	const date = Date.now();
-	var result = await Promise.resolve('foo').then(fn(50));
-	const diff = Date.now() - date;
-	t.true(diff > 30 && diff < 80);
+	const end = timeSpan();
+	const result = await Promise.resolve('foo').then(fn(50));
+	t.true(inRange(end(), 30, 70));
 	t.is(result, 'foo');
 });
