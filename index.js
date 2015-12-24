@@ -19,3 +19,12 @@ module.exports = function (ms) {
 
 	return thunk;
 };
+
+module.exports.reject = function (ms, value) {
+	if (arguments.length === 1) {
+		return new Promise(function (resolve, reject) {
+			setTimeout(reject.bind(null, value), ms);
+		});
+	}
+	return module.exports.reject.bind(null, ms);
+};
