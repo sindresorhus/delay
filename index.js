@@ -1,4 +1,6 @@
 'use strict';
+var Promise = typeof Promise === 'undefined' ? require('bluebird') : Promise;
+
 module.exports = function (ms) {
 	ms = ms || 0;
 
