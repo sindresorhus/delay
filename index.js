@@ -15,6 +15,7 @@ module.exports = function (ms) {
 	}
 
 	thunk.then = promise.then.bind(promise);
+	thunk.catch = promise.catch.bind(promise);
 
 	return thunk;
 };
