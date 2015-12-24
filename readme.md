@@ -36,6 +36,24 @@ async () => {
 	// executed 100 milliseconds later
 	baz();
 }();
+
+// Mostly for testing purposes, there is also delay.reject. It takes the value, and rejects it `ms` later.
+Promise.resolve('foo')
+	.then(delay.reject(100))
+	.then(x => blah()) // This is never executed.
+	.catch(e => {
+		// executed 100 milliseconds later
+		// e === 'foo'
+	});
+
+// You can also specify the rejection value:
+Promise.resolve('foo')
+	.then(delay.reject(100, 'bar'))
+	.then(x => blah()) // Never executed.
+	.catch(e => {
+		// executed 100 milliseconds later
+		// e === 'bar'
+	});
 ```
 
 
