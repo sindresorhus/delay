@@ -54,6 +54,9 @@ Promise.resolve('foo')
 		// executed 100 milliseconds later
 		// e === 'bar'
 	});
+	
+// For completeness, there is also delay.resolve(). It's the same as `delay`.
+
 ```
 
 
