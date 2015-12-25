@@ -18,7 +18,11 @@ test('thunk', async t => {
 
 test('.reject() with two arguments', async t => {
 	const end = timeSpan();
-	await t.throws(fn.reject(50, new Error('foo')), 'foo', 'promise is rejected with the second argument');
+	await t.throws(
+		fn.reject(50, new Error('foo')),
+		'foo',
+		'promise is rejected with the second argument'
+	);
 	t.true(inRange(end(), 30, 70), 'is delayed');
 });
 

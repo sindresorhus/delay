@@ -1,6 +1,4 @@
 'use strict';
-module.exports = generate(true);
-module.exports.reject = generate(false);
 
 function generate(shouldResolve) {
 	return function (ms, value) {
@@ -8,6 +6,7 @@ function generate(shouldResolve) {
 
 		function pickAction(resolve, reject) {
 			var action = shouldResolve ? resolve : reject;
+
 			if (arguments.length > 1) {
 				action = action.bind(null, value);
 			}
@@ -20,8 +19,9 @@ function generate(shouldResolve) {
 		});
 
 		function thunk(result) {
-			promise.catch(noop);
+			promise.catch(function () {});
 			value = value || result;
+
 			return new Promise(function (resolve, reject) {
 				setTimeout(pickAction(resolve, reject), ms);
 			});
@@ -34,4 +34,5 @@ function generate(shouldResolve) {
 	};
 }
 
-function noop() {}
+module.exports = generate(true);
+module.exports.reject = generate(false);
