@@ -21,7 +21,7 @@ module.exports = function (ms) {
 };
 
 module.exports.reject = function (ms, value) {
-	if (arguments.length === 1) {
+	if (arguments.length > 1) {
 		return new Promise(function (resolve, reject) {
 			setTimeout(reject.bind(null, value), ms);
 		});

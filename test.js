@@ -7,38 +7,29 @@ test('promise', async t => {
 	t.plan(1);
 	const end = timeSpan();
 	await fn(50);
-	t.true(inRange(end(), 30, 70), 'should be delayed');
+	t.true(inRange(end(), 30, 70), 'is delayed');
 });
 
 test('thunk', async t => {
 	t.plan(2);
 	const end = timeSpan();
 	const result = await Promise.resolve('foo').then(fn(50));
-	t.true(inRange(end(), 30, 70), 'should be delayed');
-	t.is(result, 'foo', 'should pass through the value');
+	t.true(inRange(end(), 30, 70), 'is delayed');
+	t.is(result, 'foo', 'passes through the value');
 });
 
-test.cb('.reject with two arguments', t => {
-	t.plan(2);
-	const error = new Error('foo');
+test('.reject() with two arguments', async t => {
 	const end = timeSpan();
-	fn.reject(50, error)
-		.catch(err => {
-			t.true(inRange(end(), 30, 70), 'should be delayed');
-			t.is(err, error, 'promise should be rejected with the second argument');
-			t.end();
-		});
+	await t.throws(fn.reject(50, new Error('foo')), 'foo', 'promise is rejected with the second argument');
+	t.true(inRange(end(), 30, 70), 'is delayed');
 });
 
-test.cb('.reject with one argument (thunk)', t => {
-	t.plan(2);
-	const val = 'foo';
+test('.reject() with one argument (thunk)', async t => {
 	const end = timeSpan();
-	Promise.resolve(val)
-		.then(fn.reject(50))
-		.catch(err => {
-			t.true(inRange(end(), 30, 70), 'should be delayed');
-			t.is(err, val, 'promise should be rejected with the resolved value');
-			t.end();
-		});
+	await t.throws(
+		Promise.resolve(new Error('foo')).then(fn.reject(50)),
+		'foo',
+		'promise is rejected with the resolution value'
+	);
+	t.true(inRange(end(), 30, 70), 'is delayed');
 });
