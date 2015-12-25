@@ -1,21 +1,38 @@
 'use strict';
-module.exports = function (ms) {
-	ms = ms || 0;
+module.exports = generate(true);
+module.exports.resolve = module.exports;
+module.exports.reject = generate(false);
 
-	var promise = new Promise(function (resolve) {
-		setTimeout(resolve, ms);
-	});
+function generate(shouldResolve) {
+	return function (ms, value) {
+		ms = ms || 0;
 
-	function thunk(result) {
-		return new Promise(function (resolve) {
-			setTimeout(function () {
-				resolve(result);
-			}, ms);
+		function pickAction(resolve, reject) {
+			var action = shouldResolve ? resolve : reject;
+			if (arguments.length > 1) {
+				action = action.bind(null, value);
+			}
+
+			return action;
+		}
+
+		var promise = new Promise(function (resolve, reject) {
+			setTimeout(pickAction(resolve, reject), ms);
 		});
-	}
 
-	thunk.then = promise.then.bind(promise);
-	thunk.catch = promise.catch.bind(promise);
+		function thunk(result) {
+			promise.catch(noop);
+			value = value || result;
+			return new Promise(function (resolve, reject) {
+				setTimeout(pickAction(resolve, reject), ms);
+			});
+		}
 
-	return thunk;
-};
+		thunk.then = promise.then.bind(promise);
+		thunk.catch = promise.catch.bind(promise);
+
+		return thunk;
+	};
+}
+
+function noop() {}
