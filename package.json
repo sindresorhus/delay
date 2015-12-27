@@ -1,6 +1,6 @@
 {
   "name": "delay",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Delay a promise a specified amount of time",
   "license": "MIT",
   "repository": "sindresorhus/delay",
