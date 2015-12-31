@@ -13,12 +13,13 @@ test('returns a resolved promise', async t => {
 
 test('returns a rejected promise', async t => {
 	const end = timeSpan();
-	await t.throws(
-		fn.reject(50, new Error('foo')),
-		'foo',
-		'promise is rejected with the second argument'
-	);
-	t.true(inRange(end(), 30, 70), 'is delayed');
+	try {
+		await fn.reject(50, new Error('foo'));
+		t.fail();
+	} catch (err) {
+		t.is(err.message, 'foo', 'promise is rejected with the second argument');
+		t.true(inRange(end(), 30, 70), 'is delayed');
+	}
 });
 
 test('returns a thunk that delays the result of a promise (used with 1 arg)', async t => {
@@ -37,22 +38,24 @@ test('returns a thunk that overrides the result of a promise (used with 2 args)'
 
 test('returns a thunk that can be used to delay the rejection of a promise (used with 1 arg)', async t => {
 	const end = timeSpan();
-	await t.throws(
-		Promise.reject(new Error('foo')).catch(fn.reject(50)),
-		'foo',
-		'promise is rejected with the resolution value'
-	);
-	t.true(inRange(end(), 30, 70), 'is delayed');
+	try {
+		await Promise.reject(new Error('foo')).catch(fn.reject(50));
+		t.fail();
+	} catch (err) {
+		t.is(err.message, 'foo', 'promise is rejected with the resolution value');
+		t.true(inRange(end(), 30, 70), 'is delayed');
+	}
 });
 
 test('returns a thunk that can be used to override a promise with a rejection (used with 2 args)', async t => {
 	const end = timeSpan();
-	await t.throws(
-		Promise.resolve('foo').then(fn.reject(50, new Error('bar'))),
-		'bar',
-		'promise is rejected with the resolution value'
-	);
-	t.true(inRange(end(), 30, 70), 'is delayed');
+	try {
+		await Promise.resolve('foo').then(fn.reject(50, new Error('bar')));
+		t.fail();
+	} catch (err) {
+		t.is(err.message, 'bar', 'promise is rejected with the resolution value');
+		t.true(inRange(end(), 30, 70), 'is delayed');
+	}
 });
 
 test('able to supply a falsie value for resolution', async t => {
