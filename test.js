@@ -1,10 +1,8 @@
-import ava from 'ava';
+import {serial as test} from 'ava';
 import timeSpan from 'time-span';
 import inRange from 'in-range';
 import trackRejections from 'loud-rejection/api';
 import fn from './';
-
-const test = ava.serial;
 
 test('returns a resolved promise', async t => {
 	const end = timeSpan();
@@ -102,6 +100,6 @@ test('reject will cause an unhandledRejection if not used', async t => {
 
 	promise.catch(() => {});
 	await fn(10);
-	
-	t.deepEqual(tracker.currentlyUnhandled(), [], 'no unhandled rejections now')
+
+	t.deepEqual(tracker.currentlyUnhandled(), [], 'no unhandled rejections now');
 });
