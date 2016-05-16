@@ -10,6 +10,7 @@ function generate(argIndex) {
 		var promise = thunk(value);
 		thunk.then = promise.then.bind(promise);
 		thunk.catch = promise.catch.bind(promise);
+		thunk._actualPromise = promise;
 		return thunk;
 
 		function thunk(result) {

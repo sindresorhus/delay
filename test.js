@@ -1,6 +1,7 @@
 import ava from 'ava';
 import timeSpan from 'time-span';
 import inRange from 'in-range';
+import trackRejections from 'loud-rejection/api';
 import fn from './';
 
 const test = ava.serial;
@@ -78,4 +79,29 @@ test('delay defaults to 0', async t => {
 	const end = timeSpan();
 	t.is(await Promise.resolve('foo').then(fn()), 'foo');
 	t.true(end() < 30);
+});
+
+test('reject will cause an unhandledRejection if not used', async t => {
+	const tracker = trackRejections(process);
+
+	const reason = new Error('foo');
+	let promise = fn.reject(0, reason);
+
+	await fn(10);
+
+	t.deepEqual(tracker.currentlyUnhandled(), [{
+		reason,
+		promise: promise._actualPromise
+	}], 'promisified thunk should be unhandled');
+
+	// using thunk should clear one, and reject another
+	promise = promise();
+	await fn(10);
+
+	t.deepEqual(tracker.currentlyUnhandled(), [{reason, promise}], 'thunk result should be unhandled');
+
+	promise.catch(() => {});
+	await fn(10);
+	
+	t.deepEqual(tracker.currentlyUnhandled(), [], 'no unhandled rejections now')
 });
