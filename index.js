@@ -11,14 +11,13 @@ function generate(argIndex) {
 		thunk.then = promise.then.bind(promise);
 		thunk.catch = promise.catch.bind(promise);
 		thunk._actualPromise = promise;
+
+		// Prevent unhandled rejection errors if promise is never used, and only used as a thunk
+		promise.catch(function () {});
+
 		return thunk;
 
 		function thunk(result) {
-			if (promise) {
-				// Prevent unhandled rejection errors if promise is never used, and only used as a thunk
-				promise.catch(function () {});
-			}
-
 			return new Promise(function () {
 				// resolve / reject
 				var complete = arguments[argIndex];
