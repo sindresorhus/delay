@@ -89,13 +89,9 @@ test('reject will cause an unhandledRejection if not used', async t => {
 	let promise = fn.reject(0, reason);
 
 	await fn(10);
+	t.deepEqual(tracker.currentlyUnhandled(), [], 'promisified thunk should not reject');
 
-	t.deepEqual(tracker.currentlyUnhandled(), [{
-		reason,
-		promise: promise._actualPromise
-	}], 'promisified thunk should be unhandled');
-
-	// using thunk should clear one, and reject another
+	// using thunk should reject
 	promise = promise();
 	await fn(10);
 
@@ -107,8 +103,7 @@ test('reject will cause an unhandledRejection if not used', async t => {
 	t.deepEqual(tracker.currentlyUnhandled(), [], 'no unhandled rejections now');
 });
 
-// TODO: Mark as `.failing` when ava@0.15.0 lands
-test.skip('rejected.then(rejectThunk).catch(handler) - should not create unhandledRejection', async t => {
+test('rejected.then(rejectThunk).catch(handler) - should not create unhandledRejection', async t => {
 	const tracker = trackRejections(process);
 
 	Promise.reject(new Error('foo')).then(fn.reject(new Error('bar'))).catch(() => {});

@@ -1,6 +1,6 @@
 'use strict';
 
-function generate(argIndex) {
+function generate(willResolve) {
 	return function (ms, value) {
 		ms = ms || 0;
 
@@ -11,25 +11,23 @@ function generate(argIndex) {
 		thunk.then = promise.then.bind(promise);
 		thunk.catch = promise.catch.bind(promise);
 		thunk._actualPromise = promise;
+
+		// Prevent unhandled rejection errors if promise is never used, and only used as a thunk
+		promise.catch(function () {});
+
 		return thunk;
 
 		function thunk(result) {
-			if (promise) {
-				// Prevent unhandled rejection errors if promise is never used, and only used as a thunk
-				promise.catch(function () {});
-			}
-
-			return new Promise(function () {
-				// resolve / reject
-				var complete = arguments[argIndex];
-
-				setTimeout(function () {
-					complete(useValue ? value : result);
-				}, ms);
+			return new Promise(function (resolve, reject) {
+				setTimeout(
+					willResolve ? resolve : reject,
+					ms,
+					useValue ? value : result
+				);
 			});
 		}
 	};
 }
 
-module.exports = generate(0);
-module.exports.reject = generate(1);
+module.exports = generate(true);
+module.exports.reject = generate(false);
