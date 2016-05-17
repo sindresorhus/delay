@@ -103,8 +103,7 @@ test('reject will cause an unhandledRejection if not used', async t => {
 	t.deepEqual(tracker.currentlyUnhandled(), [], 'no unhandled rejections now');
 });
 
-// TODO: Mark as `.failing` when ava@0.15.0 lands
-test.skip('rejected.then(rejectThunk).catch(handler) - should not create unhandledRejection', async t => {
+test('rejected.then(rejectThunk).catch(handler) - should not create unhandledRejection', async t => {
 	const tracker = trackRejections(process);
 
 	Promise.reject(new Error('foo')).then(fn.reject(new Error('bar'))).catch(() => {});
