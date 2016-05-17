@@ -1,9 +1,11 @@
-import ava from 'ava';
+import {serial as test} from 'ava';
 import timeSpan from 'time-span';
 import inRange from 'in-range';
+import trackRejections from 'loud-rejection/api';
 import fn from './';
 
-const test = ava.serial;
+// install core-js promise globally, because Node 0.12 native promises don't generate unhandledRejection events
+global.Promise = Promise;
 
 test('returns a resolved promise', async t => {
 	const end = timeSpan();
@@ -78,4 +80,42 @@ test('delay defaults to 0', async t => {
 	const end = timeSpan();
 	t.is(await Promise.resolve('foo').then(fn()), 'foo');
 	t.true(end() < 30);
+});
+
+test('reject will cause an unhandledRejection if not used', async t => {
+	const tracker = trackRejections(process);
+
+	const reason = new Error('foo');
+	let promise = fn.reject(0, reason);
+
+	await fn(10);
+
+	t.deepEqual(tracker.currentlyUnhandled(), [{
+		reason,
+		promise: promise._actualPromise
+	}], 'promisified thunk should be unhandled');
+
+	// using thunk should clear one, and reject another
+	promise = promise();
+	await fn(10);
+
+	t.deepEqual(tracker.currentlyUnhandled(), [{reason, promise}], 'thunk result should be unhandled');
+
+	promise.catch(() => {});
+	await fn(10);
+
+	t.deepEqual(tracker.currentlyUnhandled(), [], 'no unhandled rejections now');
+});
+
+// TODO: Mark as `.failing` when ava@0.15.0 lands
+test.skip('rejected.then(rejectThunk).catch(handler) - should not create unhandledRejection', async t => {
+	const tracker = trackRejections(process);
+
+	Promise.reject(new Error('foo')).then(fn.reject(new Error('bar'))).catch(() => {});
+
+	await fn(10);
+
+	t.deepEqual(tracker.currentlyUnhandled(), []);
+
+	tracker.currentlyUnhandled().forEach(({promise}) => promise.catch(() => {}));
 });
