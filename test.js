@@ -4,6 +4,9 @@ import inRange from 'in-range';
 import trackRejections from 'loud-rejection/api';
 import fn from './';
 
+// install core-js promise globally, because Node 0.12 native promises don't generate unhandledRejection events
+global.Promise = Promise;
+
 test('returns a resolved promise', async t => {
 	const end = timeSpan();
 	await fn(50);
