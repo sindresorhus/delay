@@ -23,9 +23,7 @@ function generate(argIndex) {
 				// resolve / reject
 				var complete = arguments[argIndex];
 
-				setTimeout(function () {
-					complete(useValue ? value : result);
-				}, ms);
+				setTimeout(complete, ms, useValue ? value : result);
 			});
 		}
 	};
