@@ -59,9 +59,11 @@ Promise.resolve('foo')
 
 ## Related
 
-- [immediate-promise](https://github.com/sindresorhus/immediate-promise) - Returns a promise resolved in the next event loop - think `setImmediate()`
+- [p-immediate](https://github.com/sindresorhus/p-immediate) - Returns a promise resolved in the next event loop - think `setImmediate()`
+- [p-timeout](https://github.com/sindresorhus/p-timeout) - Timeout a promise after a specified amount of time
+- [More…](https://github.com/sindresorhus/promise-fun)
 
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](https://sindresorhus.com)

@@ -31,7 +31,11 @@
     "next",
     "tick",
     "delay",
-    "timeout"
+    "timeout",
+    "async",
+    "await",
+    "promises",
+    "bluebird"
   ],
   "devDependencies": {
     "ava": "*",
@@ -39,6 +43,6 @@
     "in-range": "^1.0.0",
     "loud-rejection": "^1.3.0",
     "time-span": "^1.0.0",
-    "xo": "*"
+    "xo": "^0.16.0"
   }
 }
