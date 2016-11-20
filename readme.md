@@ -59,6 +59,7 @@ Promise.resolve('foo')
 
 ## Related
 
+- [p-min-delay](https://github.com/sindresorhus/p-min-delay) - Delay a promise a minimum amount of time
 - [p-immediate](https://github.com/sindresorhus/p-immediate) - Returns a promise resolved in the next event loop - think `setImmediate()`
 - [p-timeout](https://github.com/sindresorhus/p-timeout) - Timeout a promise after a specified amount of time
 - [More…](https://github.com/sindresorhus/promise-fun)
