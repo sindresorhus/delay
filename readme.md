@@ -54,6 +54,19 @@ Promise.resolve('foo')
 		// executed 100 milliseconds later
 		// err === 'bar'
 	});
+
+// you can cancel the promise by calling .cancel()
+async () => {
+	const delaying = delay(1000);
+	setTimeout(() => {
+		delaying.cancel();
+	}, 500);
+	try {
+		await delaying;
+	} catch (err) {
+		// err is an instance of delay.CancelError
+	}
+}();
 ```
 
 
