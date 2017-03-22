@@ -3,7 +3,7 @@ import timeSpan from 'time-span';
 import inRange from 'in-range';
 // TODO: this is deprecated, switch it out with the `currently-unhandled` module
 import trackRejections from 'loud-rejection/api';
-import m from './';
+import m, {CancelError} from './';
 
 // install core-js promise globally, because Node 0.12 native promises don't generate unhandledRejection events
 global.Promise = Promise;
@@ -118,4 +118,15 @@ test.failing('rejected.then(rejectThunk).catch(handler) - should not create unha
 	t.deepEqual(tracker.currentlyUnhandled(), []);
 
 	tracker.currentlyUnhandled().forEach(({promise}) => promise.catch(() => {}));
+});
+
+test('can be canceled', async t => {
+	const delaying = m(1000);
+	delaying.cancel();
+	try {
+		await delaying;
+		t.fail();
+	} catch (err) {
+		t.true(err instanceof CancelError);
+	}
 });

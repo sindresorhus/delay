@@ -37,6 +37,9 @@
     "promises",
     "bluebird"
   ],
+  "dependencies": {
+    "p-defer": "^1.0.0"
+  },
   "devDependencies": {
     "ava": "*",
     "bluebird": "^3.3.5",
