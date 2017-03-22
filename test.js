@@ -123,10 +123,5 @@ test.failing('rejected.then(rejectThunk).catch(handler) - should not create unha
 test('can be canceled', async t => {
 	const delaying = m(1000);
 	delaying.cancel();
-	try {
-		await delaying;
-		t.fail();
-	} catch (err) {
-		t.true(err instanceof CancelError);
-	}
+	await t.throws(delaying, CancelError);
 });
