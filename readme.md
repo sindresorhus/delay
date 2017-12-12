@@ -51,17 +51,17 @@ delay.reject(100, 'foo'))
 		// err === 'foo'
 	});
 
-// You can cancel the promise by calling `.cancel()`
+// You can settle the delay by calling `.clear()`
 (async () => {
-	try {
-		const delayedPromise = delay(1000);
-		setTimeout(() => {
-			delayedPromise.cancel();
-		}, 500);
-		await delayedPromise;
-	} catch (err) {
-		// `err` is an instance of `delay.CancelError`
-	}
+	const delayedPromise = delay(1000, 'done!');
+
+	setTimeout(() => {
+		delayedPromise.clear();
+	}, 500);
+
+	const result = await delayedPromise;
+	// 500 milliseconds later
+	// result === 'done!'
 })();
 ```
 
@@ -90,17 +90,13 @@ Type: `any`
 
 Value to resolve or reject in the returned promise.
 
-### delay.CancelError
+### delay#clear()
 
-Exposed for instance checking.
-
-### delay#cancel()
-
-Cancel the delay. Results in the promise being rejected with a `delay.CancelError` error.
+Clears the delay and settles the promise.
 
 
 ## Related
-
+- [p-cancelable](https://github.com/sindresorhus/p-cancelable) - Create a promise that can be canceled
 - [p-min-delay](https://github.com/sindresorhus/p-min-delay) - Delay a promise a minimum amount of time
 - [p-immediate](https://github.com/sindresorhus/p-immediate) - Returns a promise resolved in the next event loop - think `setImmediate()`
 - [p-timeout](https://github.com/sindresorhus/p-timeout) - Timeout a promise after a specified amount of time
