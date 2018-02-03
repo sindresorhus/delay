@@ -20,11 +20,10 @@ delay(200)
 		// Executed after 200 milliseconds
 	});
 
-somePromise()
-	.then(delay(100))
+delay(100, 'a result')
 	.then(result => {
-		// Executed 100 milliseconds after somePromise resolves
-		// The result from somePromise is passed through
+		// Executed after 100 milliseconds
+		// result === 'a result';
 	});
 ```
 
@@ -35,45 +34,35 @@ somePromise()
 const delay = require('delay');
 
 // With Node.js >=7.6 and async functions
-async () => {
+(async () => {
 	bar();
 
 	await delay(100);
 
 	// Executed 100 milliseconds later
 	baz();
-}();
+})();
 
-// There's also `delay.reject()` that takes the value, and rejects it `ms` later
-Promise.resolve('foo')
-	.then(delay.reject(100))
+// There's also `delay.reject()` which optionally accepts a value and rejects it `ms` later
+delay.reject(100, 'foo'))
 	.then(x => blah()) // Never executed
 	.catch(err => {
 		// Executed 100 milliseconds later
 		// err === 'foo'
 	});
 
-// You can also specify the rejection value
-Promise.resolve('foo')
-	.then(delay.reject(100, 'bar'))
-	.then(x => blah()) // Never executed
-	.catch(err => {
-		// executed 100 milliseconds later
-		// err === 'bar'
-	});
-
 // You can cancel the promise by calling `.cancel()`
-async () => {
-	const delaying = delay(1000);
-	setTimeout(() => {
-		delaying.cancel();
-	}, 500);
+(async () => {
 	try {
-		await delaying;
+		const delayedPromise = delay(1000);
+		setTimeout(() => {
+			delayedPromise.cancel();
+		}, 500);
+		await delayedPromise;
 	} catch (err) {
 		// `err` is an instance of `delay.CancelError`
 	}
-}();
+})();
 ```
 
 
@@ -81,11 +70,13 @@ async () => {
 
 ### delay(ms, [value])
 
-Delay the promise and then resolve.
+Create a promise which resolves after the specified `ms`. Optionally pass a
+`value` to resolve.
 
 ### delay.reject(ms, [value])
 
-Delay the promise and then reject.
+Create a promise which rejects after the specified `ms`. Optionally pass a
+`value` to reject.
 
 #### ms
 
@@ -97,7 +88,7 @@ Milliseconds to delay the promise.
 
 Type: `any`
 
-Value to pass down the promise chain. Overrides any existing value.
+Value to resolve or reject in the returned promise.
 
 ### delay.CancelError
 

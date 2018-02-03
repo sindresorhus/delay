@@ -1,5 +1,4 @@
 'use strict';
-const defer = require('p-defer');
 
 class CancelError extends Error {
 	constructor(message) {
@@ -8,41 +7,30 @@ class CancelError extends Error {
 	}
 }
 
-const generate = willResolve => function (ms, value) {
-	ms = ms || 0;
-	const useValue = (arguments.length > 1);
-	let result = value;
+const createDelay = willResolve => (ms, value) => {
+	let timeoutId;
+	let internalReject;
 
-	const delaying = defer();
-	const promise = delaying.promise;
+	const delayPromise = new Promise((resolve, reject) => {
+		internalReject = reject;
 
-	let timeout = setTimeout(() => {
-		const settle = willResolve ? delaying.resolve : delaying.reject;
-		settle(result);
-	}, ms);
+		timeoutId = setTimeout(() => {
+			const settle = willResolve ? resolve : reject;
+			settle(value);
+		}, ms);
+	});
 
-	const thunk = thunkResult => {
-		if (!useValue) {
-			result = thunkResult;
-		}
-		return promise;
-	};
-
-	thunk.then = promise.then.bind(promise);
-	thunk.catch = promise.catch.bind(promise);
-	thunk._actualPromise = promise;
-
-	thunk.cancel = () => {
-		if (timeout) {
-			clearTimeout(timeout);
-			timeout = null;
-			delaying.reject(new CancelError('Delay canceled'));
+	delayPromise.cancel = () => {
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+			timeoutId = null;
+			internalReject(new CancelError('Delay canceled'));
 		}
 	};
 
-	return thunk;
+	return delayPromise;
 };
 
-module.exports = generate(true);
-module.exports.reject = generate(false);
+module.exports = createDelay(true);
+module.exports.reject = createDelay(false);
 module.exports.CancelError = CancelError;
