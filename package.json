@@ -15,7 +15,8 @@
   "scripts": {
     "test": "xo && ava",
     "build": "bable index.js -o bundle.js",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "babel": "babel"
   },
   "main": "bundle.js",
   "files": [
