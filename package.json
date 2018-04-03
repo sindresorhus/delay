@@ -13,10 +13,14 @@
     "node": ">=4"
   },
   "scripts": {
-    "test": "xo && ava"
+    "test": "xo && ava",
+    "build": "bable index.js -o bundle.js",
+    "prepare": "npm run build",
+    "babel": "babel"
   },
+  "main": "bundle.js",
   "files": [
-    "index.js"
+    "bundle.js"
   ],
   "keywords": [
     "promise",
@@ -39,6 +43,8 @@
   ],
   "devDependencies": {
     "ava": "*",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "currently-unhandled": "^0.4.1",
     "in-range": "^1.0.0",
     "time-span": "^1.0.0",
