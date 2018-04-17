@@ -12,12 +12,16 @@
   "engines": {
     "node": ">=4"
   },
+  "main": "lib/index.js",
   "scripts": {
+    "build": "babel src --out-dir lib",
     "test": "xo && ava"
   },
-  "files": [
-    "index.js"
-  ],
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
   "keywords": [
     "promise",
     "resolve",
@@ -39,6 +43,9 @@
   ],
   "devDependencies": {
     "ava": "*",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "currently-unhandled": "^0.4.1",
     "in-range": "^1.0.0",
     "time-span": "^1.0.0",
