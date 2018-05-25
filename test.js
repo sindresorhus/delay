@@ -2,7 +2,7 @@ import {serial as test} from 'ava';
 import timeSpan from 'time-span';
 import inRange from 'in-range';
 import currentlyUnhandled from 'currently-unhandled';
-import m, {CancelError} from './';
+import m from './';
 
 const getCurrentlyUnhandled = currentlyUnhandled();
 
@@ -65,8 +65,27 @@ test('reject will cause an unhandledRejection if not caught', async t => {
 	t.deepEqual(getCurrentlyUnhandled(), [], 'no unhandled rejections now');
 });
 
-test('can be canceled', async t => {
-	const delayPromise = m(1000);
-	delayPromise.cancel();
-	await t.throws(delayPromise, CancelError);
+test('can clear a delayed resolution', async t => {
+	const end = timeSpan();
+	const delayPromise = m(1000, 'success!');
+
+	delayPromise.clear();
+	const success = await delayPromise;
+
+	t.true(end() < 30);
+	t.is(success, 'success!');
+});
+
+test('can clear a delayed rejection', async t => {
+	const end = timeSpan();
+	const delayPromise = m.reject(1000, 'error!');
+
+	delayPromise.clear();
+	try {
+		await delayPromise;
+	} catch (err) {
+		t.is(err, 'error!');
+	}
+
+	t.true(end() < 30);
 });
