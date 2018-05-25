@@ -96,6 +96,8 @@ Clears the delay and settles the promise.
 
 
 ## Related
+
+- [delay-cli](https://github.com/sindresorhus/delay-cli) - CLI for this module
 - [p-cancelable](https://github.com/sindresorhus/p-cancelable) - Create a promise that can be canceled
 - [p-min-delay](https://github.com/sindresorhus/p-min-delay) - Delay a promise a minimum amount of time
 - [p-immediate](https://github.com/sindresorhus/p-immediate) - Returns a promise resolved in the next event loop - think `setImmediate()`
