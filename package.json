@@ -1,47 +1,47 @@
 {
-  "name": "delay",
-  "version": "2.0.0",
-  "description": "Delay a promise a specified amount of time",
-  "license": "MIT",
-  "repository": "sindresorhus/delay",
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
-  },
-  "engines": {
-    "node": ">=4"
-  },
-  "scripts": {
-    "test": "xo && ava"
-  },
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "promise",
-    "resolve",
-    "delay",
-    "defer",
-    "wait",
-    "stall",
-    "timeout",
-    "settimeout",
-    "event",
-    "loop",
-    "next",
-    "tick",
-    "delay",
-    "async",
-    "await",
-    "promises",
-    "bluebird"
-  ],
-  "devDependencies": {
-    "ava": "*",
-    "currently-unhandled": "^0.4.1",
-    "in-range": "^1.0.0",
-    "time-span": "^1.0.0",
-    "xo": "^0.16.0"
-  }
+	"name": "delay",
+	"version": "2.0.0",
+	"description": "Delay a promise a specified amount of time",
+	"license": "MIT",
+	"repository": "sindresorhus/delay",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "sindresorhus.com"
+	},
+	"engines": {
+		"node": ">=6"
+	},
+	"scripts": {
+		"test": "xo && ava"
+	},
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"promise",
+		"resolve",
+		"delay",
+		"defer",
+		"wait",
+		"stall",
+		"timeout",
+		"settimeout",
+		"event",
+		"loop",
+		"next",
+		"tick",
+		"delay",
+		"async",
+		"await",
+		"promises",
+		"bluebird"
+	],
+	"devDependencies": {
+		"ava": "*",
+		"currently-unhandled": "^0.4.1",
+		"in-range": "^1.0.0",
+		"time-span": "^2.0.0",
+		"xo": "*"
+	}
 }

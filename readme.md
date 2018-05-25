@@ -6,7 +6,7 @@
 ## Install
 
 ```
-$ npm install --save delay
+$ npm install delay
 ```
 
 
@@ -15,25 +15,6 @@ $ npm install --save delay
 ```js
 const delay = require('delay');
 
-delay(200)
-	.then(() => {
-		// Executed after 200 milliseconds
-	});
-
-delay(100, 'a result')
-	.then(result => {
-		// Executed after 100 milliseconds
-		// result === 'a result';
-	});
-```
-
-
-## Advanced usage
-
-```js
-const delay = require('delay');
-
-// With Node.js >=7.6 and async functions
 (async () => {
 	bar();
 
@@ -42,6 +23,19 @@ const delay = require('delay');
 	// Executed 100 milliseconds later
 	baz();
 })();
+```
+
+
+## Advanced usage
+
+```js
+const delay = require('delay');
+
+delay(100, 'a result')
+	.then(result => {
+		// Executed after 100 milliseconds
+		// result === 'a result';
+	});
 
 // There's also `delay.reject()` which optionally accepts a value and rejects it `ms` later
 delay.reject(100, 'foo'))

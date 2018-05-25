@@ -2,12 +2,9 @@ import {serial as test} from 'ava';
 import timeSpan from 'time-span';
 import inRange from 'in-range';
 import currentlyUnhandled from 'currently-unhandled';
-import m from './';
+import m from '.';
 
 const getCurrentlyUnhandled = currentlyUnhandled();
-
-// install core-js promise globally, because Node 0.12 native promises don't generate unhandledRejection events
-global.Promise = Promise;
 
 test('returns a resolved promise', async t => {
 	const end = timeSpan();
@@ -50,7 +47,7 @@ test('delay defaults to 0 ms', async t => {
 
 test('reject will cause an unhandledRejection if not caught', async t => {
 	const reason = new Error('foo');
-	let promise = m.reject(0, reason);
+	const promise = m.reject(0, reason);
 
 	await m(10);
 
@@ -79,13 +76,8 @@ test('can clear a delayed resolution', async t => {
 test('can clear a delayed rejection', async t => {
 	const end = timeSpan();
 	const delayPromise = m.reject(1000, 'error!');
-
 	delayPromise.clear();
-	try {
-		await delayPromise;
-	} catch (err) {
-		t.is(err, 'error!');
-	}
 
+	await t.throws(delayPromise, /error!/);
 	t.true(end() < 30);
 });
