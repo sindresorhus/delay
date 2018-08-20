@@ -44,5 +44,10 @@
 		"in-range": "^1.0.0",
 		"time-span": "^2.0.0",
 		"xo": "*"
+	},
+	"xo": {
+		"ignores": [
+			"index.d.ts"
+		]
 	}
 }
