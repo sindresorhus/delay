@@ -20,5 +20,7 @@ const createDelay = willResolve => (ms, value) => {
 	return delayPromise;
 };
 
-module.exports = createDelay(true);
-module.exports.reject = createDelay(false);
+const delay = createDelay(true);
+delay.reject = createDelay(false);
+module.exports = delay;
+module.exports.default = delay;
