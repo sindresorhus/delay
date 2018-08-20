@@ -11,10 +11,19 @@ declare const delay: {
 	 * Optionally pass a `value` to resolve.
 	 *
 	 * @param milliseconds - Milliseconds to delay the promise.
+	 * @returns A promise which resolves after the specified `milliseconds`.
+	 */
+	(milliseconds: number): ClearablePromise<void>;
+
+	/**
+	 * Create a promise which resolves after the specified `milliseconds`.
+	 * Optionally pass a `value` to resolve.
+	 *
+	 * @param milliseconds - Milliseconds to delay the promise.
 	 * @param value - Value to resolve in the returned promise.
 	 * @returns A promise which resolves after the specified `milliseconds`.
 	 */
-	<T = never>(milliseconds: number, value?: T): ClearablePromise<T>;
+	<T>(milliseconds: number, value: T): ClearablePromise<T>;
 
 	/**
 	 * Create a promise which rejects after the specified `milliseconds`.
