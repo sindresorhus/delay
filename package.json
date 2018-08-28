@@ -13,7 +13,7 @@
 		"node": ">=6"
 	},
 	"scripts": {
-		"test": "xo && ava"
+		"test": "xo && tsd-check && ava"
 	},
 	"files": [
 		"index.js",
@@ -43,11 +43,12 @@
 		"currently-unhandled": "^0.4.1",
 		"in-range": "^1.0.0",
 		"time-span": "^2.0.0",
+		"tsd-check": "^0.1.0",
 		"xo": "*"
 	},
 	"xo": {
 		"ignores": [
-			"index.d.ts"
+			"*.ts"
 		]
 	}
 }
