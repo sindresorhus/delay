@@ -2,6 +2,7 @@ import {serial as test} from 'ava';
 import timeSpan from 'time-span';
 import inRange from 'in-range';
 import currentlyUnhandled from 'currently-unhandled';
+import {AbortController} from 'abort-controller';
 import m from '.';
 
 const getCurrentlyUnhandled = currentlyUnhandled();
@@ -80,4 +81,43 @@ test('can clear a delayed rejection', async t => {
 
 	await t.throws(delayPromise, /error!/);
 	t.true(end() < 30);
+});
+
+test('resolution can be aborted with an AbortSignal as second parameter', async t => {
+	const end = timeSpan();
+	try {
+		const abortController = new AbortController();
+		setTimeout(() => abortController.abort(), 1);
+		await m(1000, abortController.signal);
+		t.fail('Expected to reject');
+	} catch (err) {
+		t.is(err.name, 'AbortError');
+		t.true(end() < 30);
+	}
+});
+
+test('resolution can be aborted with an AbortSignal as third parameter', async t => {
+	const end = timeSpan();
+	try {
+		const abortController = new AbortController();
+		setTimeout(() => abortController.abort(), 1);
+		await m(1000, 'value', abortController.signal);
+		t.fail('Expected to reject');
+	} catch (err) {
+		t.is(err.name, 'AbortError');
+		t.true(end() < 30);
+	}
+});
+
+test('rejects with AbortError if AbortSignal is already aborted', async t => {
+	const end = timeSpan();
+	try {
+		const abortController = new AbortController();
+		abortController.abort();
+		await m(1000, abortController.signal);
+		t.fail('Expected to reject');
+	} catch (err) {
+		t.is(err.name, 'AbortError');
+		t.true(end() < 30);
+	}
 });

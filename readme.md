@@ -57,20 +57,42 @@ delay.reject(100, 'foo'))
 	// 500 milliseconds later
 	// result === 'done!'
 })();
+
+// You can abort the delay with an AbortSignal as the last parameter
+(async () => {
+	const abortController = new AbortController();
+
+	const delayedPromise = delay(1000, abortController.signal);
+
+	setTimeout(() => {
+		abortController.abort();
+	}, 500);
+
+	try {
+		await delayedPromise;
+	} catch (err) {
+		// 500ms later:
+		// err.name === 'AbortError'
+	}
+})();
 ```
 
 
 ## API
 
-### delay(ms, [value])
+### delay(ms, [value], [signal])
 
 Create a promise which resolves after the specified `ms`. Optionally pass a
 `value` to resolve.
+If the last parameter is an [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal),
+the returned Promise will be rejected with an AbortError when the signal is aborted.
 
-### delay.reject(ms, [value])
+### delay.reject(ms, [value], [signal])
 
 Create a promise which rejects after the specified `ms`. Optionally pass a
 `value` to reject.
+If the last parameter is an [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal),
+the returned Promise will be rejected with an AbortError when the signal is aborted.
 
 #### ms
 
@@ -83,6 +105,12 @@ Milliseconds to delay the promise.
 Type: `any`
 
 Value to resolve or reject in the returned promise.
+
+#### signal
+
+Type: [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal)
+
+Signal to abort the delay.
 
 ### delay#clear()
 

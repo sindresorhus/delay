@@ -39,6 +39,7 @@
 		"bluebird"
 	],
 	"devDependencies": {
+		"abort-controller": "^1.0.2",
 		"ava": "*",
 		"currently-unhandled": "^0.4.1",
 		"in-range": "^1.0.0",
