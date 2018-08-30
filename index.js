@@ -25,7 +25,7 @@ const createDelay = willResolve => (ms, {value, signal} = {}) => {
 		signal.addEventListener('abort', () => {
 			clearTimeout(timeoutId);
 			rejectFn(createAbortError());
-		});
+		}, {once: true});
 	}
 
 	delayPromise.clear = () => {
