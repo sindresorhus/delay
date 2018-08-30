@@ -16,7 +16,7 @@ test('returns a resolved promise', async t => {
 test('returns a rejected promise', async t => {
 	const end = timeSpan();
 	try {
-		await m.reject(50, new Error('foo'));
+		await m.reject(50, {value: new Error('foo')});
 		t.fail();
 	} catch (err) {
 		t.is(err.message, 'foo', 'promise is rejected with the second argument');
@@ -26,7 +26,7 @@ test('returns a rejected promise', async t => {
 
 test('able to resolve a falsie value', async t => {
 	t.is(
-		await m(50, 0),
+		await m(50, {value: 0}),
 		0
 	);
 });
@@ -34,7 +34,7 @@ test('able to resolve a falsie value', async t => {
 test('able to reject a falsie value', async t => {
 	t.plan(1);
 	try {
-		await m.reject(50, false);
+		await m.reject(50, {value: false});
 	} catch (err) {
 		t.is(err, false);
 	}
@@ -48,7 +48,7 @@ test('delay defaults to 0 ms', async t => {
 
 test('reject will cause an unhandledRejection if not caught', async t => {
 	const reason = new Error('foo');
-	const promise = m.reject(0, reason);
+	const promise = m.reject(0, {value: reason});
 
 	await m(10);
 
@@ -65,7 +65,7 @@ test('reject will cause an unhandledRejection if not caught', async t => {
 
 test('can clear a delayed resolution', async t => {
 	const end = timeSpan();
-	const delayPromise = m(1000, 'success!');
+	const delayPromise = m(1000, {value: 'success!'});
 
 	delayPromise.clear();
 	const success = await delayPromise;
@@ -76,19 +76,19 @@ test('can clear a delayed resolution', async t => {
 
 test('can clear a delayed rejection', async t => {
 	const end = timeSpan();
-	const delayPromise = m.reject(1000, 'error!');
+	const delayPromise = m.reject(1000, {value: 'error!'});
 	delayPromise.clear();
 
 	await t.throws(delayPromise, /error!/);
 	t.true(end() < 30);
 });
 
-test('resolution can be aborted with an AbortSignal as second parameter', async t => {
+test('resolution can be aborted with an AbortSignal', async t => {
 	const end = timeSpan();
 	try {
 		const abortController = new AbortController();
 		setTimeout(() => abortController.abort(), 1);
-		await m(1000, abortController.signal);
+		await m(1000, {signal: abortController.signal});
 		t.fail('Expected to reject');
 	} catch (err) {
 		t.is(err.name, 'AbortError');
@@ -96,12 +96,25 @@ test('resolution can be aborted with an AbortSignal as second parameter', async 
 	}
 });
 
-test('resolution can be aborted with an AbortSignal as third parameter', async t => {
+test('resolution can be aborted with an AbortSignal if a value is passed', async t => {
 	const end = timeSpan();
 	try {
 		const abortController = new AbortController();
 		setTimeout(() => abortController.abort(), 1);
-		await m(1000, 'value', abortController.signal);
+		await m(1000, {value: 123, signal: abortController.signal});
+		t.fail('Expected to reject');
+	} catch (err) {
+		t.is(err.name, 'AbortError');
+		t.true(end() < 30);
+	}
+});
+
+test('rejection can be aborted with an AbortSignal if a value is passed', async t => {
+	const end = timeSpan();
+	try {
+		const abortController = new AbortController();
+		setTimeout(() => abortController.abort(), 1);
+		await m.reject(1000, {value: new Error(), signal: abortController.signal});
 		t.fail('Expected to reject');
 	} catch (err) {
 		t.is(err.name, 'AbortError');
@@ -114,7 +127,7 @@ test('rejects with AbortError if AbortSignal is already aborted', async t => {
 	try {
 		const abortController = new AbortController();
 		abortController.abort();
-		await m(1000, abortController.signal);
+		await m(1000, {signal: abortController.signal});
 		t.fail('Expected to reject');
 	} catch (err) {
 		t.is(err.name, 'AbortError');

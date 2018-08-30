@@ -6,17 +6,7 @@ const createAbortError = () => {
 	return error;
 };
 
-const isAbortSignal = value =>
-	typeof value === 'object' &&
-	value !== null &&
-	typeof value.aborted === 'boolean' &&
-	typeof value.addEventListener === 'function';
-
-const createDelay = willResolve => (ms, value, signal) => {
-	if (isAbortSignal(value)) {
-		signal = value;
-		value = undefined;
-	}
+const createDelay = willResolve => (ms, {value, signal} = {}) => {
 	if (signal && signal.aborted) {
 		return Promise.reject(createAbortError());
 	}

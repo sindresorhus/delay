@@ -58,18 +58,17 @@ delay.reject(100, 'foo'))
 	// result === 'done!'
 })();
 
-// You can abort the delay with an AbortSignal as the last parameter
+// In the browser, you can abort the delay with an AbortSignal as the last parameter
+// There is a ponyfill for NodeJS: https://www.npmjs.com/package/abort-controller
 (async () => {
 	const abortController = new AbortController();
 
-	const delayedPromise = delay(1000, abortController.signal);
-
 	setTimeout(() => {
-		abortController.abort();
+		abortController.abort()
 	}, 500);
 
 	try {
-		await delayedPromise;
+		await delay(1000, abortController.signal);
 	} catch (err) {
 		// 500ms later:
 		// err.name === 'AbortError'
@@ -80,19 +79,13 @@ delay.reject(100, 'foo'))
 
 ## API
 
-### delay(ms, [value], [signal])
+### delay(ms, [options])
 
-Create a promise which resolves after the specified `ms`. Optionally pass a
-`value` to resolve.
-If the last parameter is an [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal),
-the returned Promise will be rejected with an AbortError when the signal is aborted.
+Create a promise which resolves after the specified `ms`.
 
-### delay.reject(ms, [value], [signal])
+### delay.reject(ms, [options])
 
-Create a promise which rejects after the specified `ms`. Optionally pass a
-`value` to reject.
-If the last parameter is an [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal),
-the returned Promise will be rejected with an AbortError when the signal is aborted.
+Create a promise which rejects after the specified `ms`.
 
 #### ms
 
@@ -100,19 +93,21 @@ Type: `number`
 
 Milliseconds to delay the promise.
 
-#### value
+#### options.value
 
 Type: `any`
 
-Value to resolve or reject in the returned promise.
+Optional value to resolve or reject in the returned promise.
 
-#### signal
+#### options.signal
 
 Type: [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal)
 
-Signal to abort the delay.
+Optional AbortSignal to abort the delay.
+The returned Promise will be rejected with an AbortError when the signal is aborted.
+AbortSignal is available in all modern browsers and there is a [ponyfill for NodeJS](https://www.npmjs.com/package/abort-controller).
 
-### delay#clear()
+### delayPromise.clear()
 
 Clears the delay and settles the promise.
 
