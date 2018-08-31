@@ -37,7 +37,6 @@ declare const delay: {
 	 * Create a promise which rejects after the specified `milliseconds`.
 	 *
 	 * @param milliseconds - Milliseconds to delay the promise.
-	 * @param signal - An optional AbortSignal to abort the delay. If aborted, the Promise will be rejected with an AbortError.
 	 * @returns A promise which rejects after the specified `milliseconds`.
 	 */
 	// TODO: Allow providing value type after https://github.com/Microsoft/TypeScript/issues/5413 will be resolved.
