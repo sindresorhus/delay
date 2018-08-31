@@ -19,18 +19,24 @@ const createDelay = willResolve => (ms, {value, signal} = {}) => {
 		clearTimeout(timeoutId);
 		rejectFn(createAbortError());
 	};
-	const cleanup = val => {
+	const cleanup = () => {
 		if (signal) {
 			signal.removeEventListener('abort', signalListener);
 		}
-		return val;
 	};
 
 	const delayPromise = new Promise((resolve, reject) => {
-		settle = willResolve ? resolve : reject;
+		settle = () => {
+			cleanup();
+			if (willResolve) {
+				resolve(value);
+			} else {
+				reject(value);
+			}
+		};
 		rejectFn = reject;
-		timeoutId = setTimeout(settle, ms, value);
-	}).then(cleanup, cleanup);
+		timeoutId = setTimeout(settle, ms);
+	});
 
 	if (signal) {
 		signal.addEventListener('abort', signalListener, {once: true});
@@ -41,7 +47,7 @@ const createDelay = willResolve => (ms, {value, signal} = {}) => {
 		if (timeoutId) {
 			clearTimeout(timeoutId);
 			timeoutId = null;
-			settle(value);
+			settle();
 		}
 	};
 
