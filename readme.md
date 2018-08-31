@@ -31,14 +31,14 @@ const delay = require('delay');
 ```js
 const delay = require('delay');
 
-delay(100, 'a result')
+delay(100, { value: 'a result' })
 	.then(result => {
 		// Executed after 100 milliseconds
 		// result === 'a result';
 	});
 
 // There's also `delay.reject()` which optionally accepts a value and rejects it `ms` later
-delay.reject(100, 'foo'))
+delay.reject(100, { value: 'foo' }))
 	.then(x => blah()) // Never executed
 	.catch(err => {
 		// Executed 100 milliseconds later
@@ -47,7 +47,7 @@ delay.reject(100, 'foo'))
 
 // You can settle the delay by calling `.clear()`
 (async () => {
-	const delayedPromise = delay(1000, 'done!');
+	const delayedPromise = delay(1000, { value: 'done!' });
 
 	setTimeout(() => {
 		delayedPromise.clear();
@@ -68,7 +68,7 @@ delay.reject(100, 'foo'))
 	}, 500);
 
 	try {
-		await delay(1000, abortController.signal);
+		await delay(1000, { signal: abortController.signal });
 	} catch (err) {
 		// 500ms later:
 		// err.name === 'AbortError'
