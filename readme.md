@@ -26,90 +26,116 @@ const delay = require('delay');
 ```
 
 
-## Advanced usage
-
-```js
-const delay = require('delay');
-
-delay(100, { value: 'a result' })
-	.then(result => {
-		// Executed after 100 milliseconds
-		// result === 'a result';
-	});
-
-// There's also `delay.reject()` which optionally accepts a value and rejects it `ms` later
-delay.reject(100, { value: 'foo' }))
-	.then(x => blah()) // Never executed
-	.catch(err => {
-		// Executed 100 milliseconds later
-		// err === 'foo'
-	});
-
-// You can settle the delay by calling `.clear()`
-(async () => {
-	const delayedPromise = delay(1000, { value: 'done!' });
-
-	setTimeout(() => {
-		delayedPromise.clear();
-	}, 500);
-
-	const result = await delayedPromise;
-	// 500 milliseconds later
-	// result === 'done!'
-})();
-
-// In the browser, you can abort the delay with an AbortSignal as the last parameter
-// There is a ponyfill for NodeJS: https://www.npmjs.com/package/abort-controller
-(async () => {
-	const abortController = new AbortController();
-
-	setTimeout(() => {
-		abortController.abort()
-	}, 500);
-
-	try {
-		await delay(1000, { signal: abortController.signal });
-	} catch (err) {
-		// 500ms later:
-		// err.name === 'AbortError'
-	}
-})();
-```
-
-
 ## API
 
-### delay(ms, [options])
+### delay(milliseconds, [options])
 
-Create a promise which resolves after the specified `ms`.
+Create a promise which resolves after the specified `milliseconds`.
 
-### delay.reject(ms, [options])
+### delay.reject(milliseconds, [options])
 
-Create a promise which rejects after the specified `ms`.
+Create a promise which rejects after the specified `milliseconds`.
 
-#### ms
+#### milliseconds
 
 Type: `number`
 
 Milliseconds to delay the promise.
 
-#### options.value
+#### options
+
+Type: `Object`
+
+##### value
 
 Type: `any`
 
 Optional value to resolve or reject in the returned promise.
 
-#### options.signal
+##### signal
 
 Type: [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal)
 
-Optional AbortSignal to abort the delay.
-The returned Promise will be rejected with an AbortError when the signal is aborted.
-AbortSignal is available in all modern browsers and there is a [ponyfill for NodeJS](https://www.npmjs.com/package/abort-controller).
+The returned promise will be rejected with an AbortError if the signal is aborted. AbortSignal is available in all modern browsers and there is a [ponyfill for Node.js](https://github.com/mysticatea/abort-controller).
 
 ### delayPromise.clear()
 
 Clears the delay and settles the promise.
+
+
+## Advanced usage
+
+Passing a value:
+
+```js
+const delay = require('delay');
+
+(async() => {
+	const result = await delay(100, {value: '🦄'});
+
+	// Executed after 100 milliseconds
+	console.log(result);
+	//=> '🦄'
+})();
+```
+
+Using `delay.reject()`, which optionally accepts a value and rejects it `ms` later:
+
+```js
+const delay = require('delay');
+
+(async () => {
+	try {
+		await delay.reject(100, {value: new Error('🦄')});
+
+		console.log('This is never executed');
+	} catch (error) {
+		// 100 milliseconds later
+		console.log(error);
+		//=> [Error: 🦄]
+	}
+})();
+```
+
+You can settle the delay early by calling `.clear()`:
+
+```js
+const delay = require('delay');
+
+(async () => {
+	const delayedPromise = delay(1000, {value: 'Done'});
+
+	setTimeout(() => {
+		delayedPromise.clear();
+	}, 500);
+
+	// 500 milliseconds later
+	console.log(await delayedPromise);
+	//=> 'Done'
+})();
+```
+
+You can abort the delay with an AbortSignal:
+
+```js
+const delay = require('delay');
+
+(async () => {
+	const abortController = new AbortController();
+
+	setTimeout(() => {
+		abortController.abort();
+	}, 500);
+
+	try {
+		await delay(1000, {signal: abortController.signal});
+	} catch (error) {
+		// 500 milliseconds later
+		console.log(error.name)
+		//=> 'AbortError'
+	}
+})();
+```
 
 
 ## Related

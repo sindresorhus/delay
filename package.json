@@ -40,7 +40,7 @@
 	],
 	"devDependencies": {
 		"abort-controller": "^1.0.2",
-		"ava": "*",
+		"ava": "1.0.0-beta.8",
 		"currently-unhandled": "^0.4.1",
 		"in-range": "^1.0.0",
 		"time-span": "^2.0.0",
