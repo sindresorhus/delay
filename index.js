@@ -44,12 +44,10 @@ const createDelay = willResolve => (ms, {value, signal} = {}) => {
 	}
 
 	delayPromise.clear = () => {
+		clearTimeout(timeoutId);
+		timeoutId = null;
 		cleanup();
-		if (timeoutId) {
-			clearTimeout(timeoutId);
-			timeoutId = null;
-			settle();
-		}
+		settle();
 	};
 
 	return delayPromise;
