@@ -1,19 +1,53 @@
 'use strict';
 
-const createDelay = willResolve => (ms, value) => {
+const createAbortError = () => {
+	const error = new Error('Delay aborted');
+	error.name = 'AbortError';
+	return error;
+};
+
+const createDelay = willResolve => (ms, {value, signal} = {}) => {
+	if (signal && signal.aborted) {
+		return Promise.reject(createAbortError());
+	}
+
 	let timeoutId;
 	let settle;
+	let rejectFn;
+
+	const signalListener = () => {
+		clearTimeout(timeoutId);
+		rejectFn(createAbortError());
+	};
+	const cleanup = () => {
+		if (signal) {
+			signal.removeEventListener('abort', signalListener);
+		}
+	};
 
 	const delayPromise = new Promise((resolve, reject) => {
-		settle = willResolve ? resolve : reject;
-		timeoutId = setTimeout(settle, ms, value);
+		settle = () => {
+			cleanup();
+			if (willResolve) {
+				resolve(value);
+			} else {
+				reject(value);
+			}
+		};
+		rejectFn = reject;
+		timeoutId = setTimeout(settle, ms);
 	});
 
+	if (signal) {
+		signal.addEventListener('abort', signalListener, {once: true});
+	}
+
 	delayPromise.clear = () => {
+		cleanup();
 		if (timeoutId) {
 			clearTimeout(timeoutId);
 			timeoutId = null;
-			settle(value);
+			settle();
 		}
 	};
 

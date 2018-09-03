@@ -31,14 +31,14 @@ const delay = require('delay');
 ```js
 const delay = require('delay');
 
-delay(100, 'a result')
+delay(100, { value: 'a result' })
 	.then(result => {
 		// Executed after 100 milliseconds
 		// result === 'a result';
 	});
 
 // There's also `delay.reject()` which optionally accepts a value and rejects it `ms` later
-delay.reject(100, 'foo'))
+delay.reject(100, { value: 'foo' }))
 	.then(x => blah()) // Never executed
 	.catch(err => {
 		// Executed 100 milliseconds later
@@ -47,7 +47,7 @@ delay.reject(100, 'foo'))
 
 // You can settle the delay by calling `.clear()`
 (async () => {
-	const delayedPromise = delay(1000, 'done!');
+	const delayedPromise = delay(1000, { value: 'done!' });
 
 	setTimeout(() => {
 		delayedPromise.clear();
@@ -57,20 +57,35 @@ delay.reject(100, 'foo'))
 	// 500 milliseconds later
 	// result === 'done!'
 })();
+
+// In the browser, you can abort the delay with an AbortSignal as the last parameter
+// There is a ponyfill for NodeJS: https://www.npmjs.com/package/abort-controller
+(async () => {
+	const abortController = new AbortController();
+
+	setTimeout(() => {
+		abortController.abort()
+	}, 500);
+
+	try {
+		await delay(1000, { signal: abortController.signal });
+	} catch (err) {
+		// 500ms later:
+		// err.name === 'AbortError'
+	}
+})();
 ```
 
 
 ## API
 
-### delay(ms, [value])
+### delay(ms, [options])
 
-Create a promise which resolves after the specified `ms`. Optionally pass a
-`value` to resolve.
+Create a promise which resolves after the specified `ms`.
 
-### delay.reject(ms, [value])
+### delay.reject(ms, [options])
 
-Create a promise which rejects after the specified `ms`. Optionally pass a
-`value` to reject.
+Create a promise which rejects after the specified `ms`.
 
 #### ms
 
@@ -78,13 +93,21 @@ Type: `number`
 
 Milliseconds to delay the promise.
 
-#### value
+#### options.value
 
 Type: `any`
 
-Value to resolve or reject in the returned promise.
+Optional value to resolve or reject in the returned promise.
 
-### delay#clear()
+#### options.signal
+
+Type: [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal)
+
+Optional AbortSignal to abort the delay.
+The returned Promise will be rejected with an AbortError when the signal is aborted.
+AbortSignal is available in all modern browsers and there is a [ponyfill for NodeJS](https://www.npmjs.com/package/abort-controller).
+
+### delayPromise.clear()
 
 Clears the delay and settles the promise.
 
