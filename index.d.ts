@@ -1,4 +1,4 @@
-/// <reference lib="dom" />
+/// <reference lib="dom"/>
 
 interface ClearablePromise<T> extends Promise<T> {
 	/**
