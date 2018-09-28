@@ -7,6 +7,17 @@ export interface ClearablePromise<T> extends Promise<T> {
 	clear(): void;
 }
 
+/**
+ * Minimal subset of `AbortSignal` that delay will use if passed.
+ * This avoids a dependency on dom.d.ts.
+ * The dom.d.ts `AbortSignal` is compatible with this one.
+ */
+interface AbortSignal {
+	readonly aborted: boolean;
+	addEventListener(type: 'abort', listener: () => void, options?: { once?: boolean }): void;
+	removeEventListener(type: 'abort', listener: () => void): void;
+}
+
 export interface Options {
 	/**
 	 * An optional AbortSignal to abort the delay.
