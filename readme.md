@@ -62,6 +62,9 @@ The returned promise will be rejected with an AbortError if the signal is aborte
 
 Clears the delay and settles the promise.
 
+### delay.createWithTimers({clearTimeout, setTimeout})
+
+Creates a new `delay` instance using the provided functions for clearing and setting timeouts. Useful if you're about to stub timers globally, but you still want to use `delay` to manage your tests.
 
 ## Advanced usage
 
@@ -137,6 +140,20 @@ const delay = require('delay');
 })();
 ```
 
+Create a new instance that is unaffected by libraries such as [lolex](https://github.com/sinonjs/lolex/):
+
+```js
+const delay = require('delay');
+const custom = delay.createWithTimers({clearTimeout, setTimeout})
+
+(async() => {
+	const result = await custom(100, {value: '🦄'});
+
+	// Executed after 100 milliseconds
+	console.log(result);
+	//=> '🦄'
+})();
+```
 
 ## Related
 
