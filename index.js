@@ -6,7 +6,7 @@ const createAbortError = () => {
 	return error;
 };
 
-const createDelay = willResolve => (ms, {value, signal} = {}) => {
+const createDelay = ({clearTimeout: clear = clearTimeout, setTimeout: set = setTimeout, willResolve}) => (ms, {value, signal} = {}) => {
 	if (signal && signal.aborted) {
 		return Promise.reject(createAbortError());
 	}
@@ -16,7 +16,7 @@ const createDelay = willResolve => (ms, {value, signal} = {}) => {
 	let rejectFn;
 
 	const signalListener = () => {
-		clearTimeout(timeoutId);
+		clear(timeoutId);
 		rejectFn(createAbortError());
 	};
 
@@ -36,7 +36,7 @@ const createDelay = willResolve => (ms, {value, signal} = {}) => {
 			}
 		};
 		rejectFn = reject;
-		timeoutId = setTimeout(settle, ms);
+		timeoutId = set(settle, ms);
 	});
 
 	if (signal) {
@@ -44,7 +44,7 @@ const createDelay = willResolve => (ms, {value, signal} = {}) => {
 	}
 
 	delayPromise.clear = () => {
-		clearTimeout(timeoutId);
+		clear(timeoutId);
 		timeoutId = null;
 		cleanup();
 		settle();
@@ -53,7 +53,12 @@ const createDelay = willResolve => (ms, {value, signal} = {}) => {
 	return delayPromise;
 };
 
-const delay = createDelay(true);
-delay.reject = createDelay(false);
+const delay = createDelay({willResolve: true});
+delay.reject = createDelay({willResolve: false});
+delay.createWithTimers = ({clearTimeout, setTimeout}) => {
+	const delay = createDelay({clearTimeout, setTimeout, willResolve: true});
+	delay.reject = createDelay({clearTimeout, setTimeout, willResolve: false});
+	return delay;
+};
 module.exports = delay;
 module.exports.default = delay;

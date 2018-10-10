@@ -15,7 +15,7 @@ export interface Options {
 	signal?: AbortSignal
 }
 
-declare const delay: {
+type Delay = {
 	/**
 	 * Create a promise which resolves after the specified `milliseconds`.
 	 *
@@ -46,6 +46,10 @@ declare const delay: {
 		/** Value to reject in the returned promise. */
 		value?: any
 	}): ClearablePromise<never>;
+}
+
+declare const delay: Delay & {
+	createWithTimers(timers: {clearTimeout: typeof clearTimeout, setTimeout: typeof setTimeout}): Delay
 };
 
 export default delay;
