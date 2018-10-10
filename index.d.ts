@@ -1,5 +1,3 @@
-/// <reference lib="dom"/>
-
 export interface ClearablePromise<T> extends Promise<T> {
 	/**
 	 * Clears the delay and settles the promise.
