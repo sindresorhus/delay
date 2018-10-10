@@ -145,7 +145,7 @@ Create a new instance that is unaffected by libraries such as [lolex](https://gi
 ```js
 const delay = require('delay');
 
-const customDelay = delay.createWithTimers({clearTimeout, setTimeout})
+const customDelay = delay.createWithTimers({clearTimeout, setTimeout});
 
 (async() => {
 	const result = await customDelay(100, {value: '🦄'});
@@ -155,6 +155,7 @@ const customDelay = delay.createWithTimers({clearTimeout, setTimeout})
 	//=> '🦄'
 })();
 ```
+
 
 ## Related
 
