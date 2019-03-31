@@ -35,6 +35,7 @@ const createDelay = ({clearTimeout: clear = clearTimeout, setTimeout: set = setT
 				reject(value);
 			}
 		};
+
 		rejectFn = reject;
 		timeoutId = set(settle, ms);
 	});
@@ -60,5 +61,7 @@ delay.createWithTimers = ({clearTimeout, setTimeout}) => {
 	delay.reject = createDelay({clearTimeout, setTimeout, willResolve: false});
 	return delay;
 };
+
 module.exports = delay;
+// TODO: Remove this for the next major release
 module.exports.default = delay;
