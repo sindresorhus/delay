@@ -13,7 +13,7 @@
 		"node": ">=6"
 	},
 	"scripts": {
-		"test": "xo && ava && tsd-check"
+		"test": "xo && ava && tsd"
 	},
 	"files": [
 		"index.js",
@@ -39,12 +39,12 @@
 		"bluebird"
 	],
 	"devDependencies": {
-		"abort-controller": "^1.0.2",
-		"ava": "1.0.0-beta.8",
+		"abort-controller": "^3.0.0",
+		"ava": "1.4.1",
 		"currently-unhandled": "^0.4.1",
 		"in-range": "^1.0.0",
-		"time-span": "^2.0.0",
-		"tsd-check": "^0.2.1",
-		"xo": "*"
+		"time-span": "^3.0.0",
+		"tsd": "^0.7.1",
+		"xo": "^0.24.0"
 	}
 }
