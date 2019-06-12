@@ -6,7 +6,7 @@ const createAbortError = () => {
 	return error;
 };
 
-const createDelay = ({clearTimeout: clear = clearTimeout, setTimeout: set = setTimeout, willResolve}) => (ms, {value, signal} = {}) => {
+const createDelay = ({clearTimeout: defaultClear, setTimeout: set, willResolve}) => (ms, {value, signal} = {}) => {
 	if (signal && signal.aborted) {
 		return Promise.reject(createAbortError());
 	}
@@ -14,6 +14,7 @@ const createDelay = ({clearTimeout: clear = clearTimeout, setTimeout: set = setT
 	let timeoutId;
 	let settle;
 	let rejectFn;
+	const clear = defaultClear || clearTimeout;
 
 	const signalListener = () => {
 		clear(timeoutId);
@@ -37,7 +38,7 @@ const createDelay = ({clearTimeout: clear = clearTimeout, setTimeout: set = setT
 		};
 
 		rejectFn = reject;
-		timeoutId = set(settle, ms);
+		timeoutId = (set || setTimeout)(settle, ms);
 	});
 
 	if (signal) {
