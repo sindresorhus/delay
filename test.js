@@ -44,6 +44,12 @@ test('delay defaults to 0 ms', async t => {
 	t.true(end() < 30);
 });
 
+test('delay with string', async t => {
+	const end = timeSpan();
+	await m('100 millis 0.1 second');
+	t.true(inRange(end(), 190, 300), 'is delayed');
+});
+
 test('reject will cause an unhandledRejection if not caught', async t => {
 	const reason = new Error('foo');
 	const promise = m.reject(0, {value: reason});

@@ -1,5 +1,7 @@
 'use strict';
 
+const dt = require('delta-time');
+
 const createAbortError = () => {
 	const error = new Error('Delay aborted');
 	error.name = 'AbortError';
@@ -38,7 +40,7 @@ const createDelay = ({clearTimeout: defaultClear, setTimeout: set, willResolve})
 		};
 
 		rejectFn = reject;
-		timeoutId = (set || setTimeout)(settle, ms);
+		timeoutId = (set || setTimeout)(settle, dt(ms));
 	});
 
 	if (signal) {

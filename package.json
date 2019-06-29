@@ -46,5 +46,8 @@
 		"time-span": "^3.0.0",
 		"tsd": "^0.7.1",
 		"xo": "^0.24.0"
+	},
+	"dependencies": {
+		"delta-time": "^2.0.0"
 	}
 }
