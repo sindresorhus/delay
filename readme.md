@@ -38,9 +38,9 @@ Create a promise which rejects after the specified `milliseconds`.
 
 #### milliseconds
 
-Type: `number`
+Type: `number` or `string`
 
-Milliseconds to delay the promise.
+Milliseconds to delay the promise either as a number or a [time string](https://github.com/repraze-org/delta-time).
 
 #### options
 
@@ -67,6 +67,21 @@ Clears the delay and settles the promise.
 Creates a new `delay` instance using the provided functions for clearing and setting timeouts. Useful if you're about to stub timers globally, but you still want to use `delay` to manage your tests.
 
 ## Advanced usage
+
+Using `string` for `milliseconds`:
+
+```js
+const delay = require('delay');
+
+(async () => {
+	bar();
+
+	await delay('2s');
+
+	// Executed 2000 milliseconds later
+	baz();
+})();
+```
 
 Passing a value:
 
