@@ -38,6 +38,14 @@ type Delay = {
 	@returns A promise which resolves after the specified `milliseconds`.
 	*/
 	(milliseconds: number, options?: delay.Options): delay.ClearablePromise<void>;
+	/**
+	 Create a promise which resolves after a random time in the range [`milliseconds`, `millisecondsTo`).
+
+	 @param millisecondsFrom - Lower bound of random number of milliseconds to delay the promise.
+	 @param millisecondsTo - Upper bound of random number of milliseconds to delay the promise.
+	 @returns A promise that resolves thereafter.
+	 */
+	(millisecondsFrom: number, millisecondsTo: number, options?: delay.Options): delay.ClearablePromise<void>;
 
 	/**
 	Create a promise which resolves after the specified `milliseconds`.
@@ -51,6 +59,23 @@ type Delay = {
 			/**
 			Value to resolve in the returned promise.
 			*/
+			value: T;
+		}
+	): delay.ClearablePromise<T>;
+	/**
+	 Create a promise which resolves after a random time in the range [`milliseconds`, `millisecondsTo`).
+
+	 @param millisecondsFrom - Lower bound of random number of milliseconds to delay the promise.
+	 @param millisecondsTo - Upper bound of random number of milliseconds to delay the promise.
+	 @returns A promise that resolves thereafter.
+	 */
+	<T>(
+		millisecondsFrom: number,
+		millisecondsTo: number,
+		options?: delay.Options & {
+			/**
+			 Value to resolve in the returned promise.
+			 */
 			value: T;
 		}
 	): delay.ClearablePromise<T>;
@@ -68,6 +93,23 @@ type Delay = {
 			/**
 			Value to reject in the returned promise.
 			*/
+			value?: unknown;
+		}
+	): delay.ClearablePromise<never>;
+	/**
+	 Create a promise which rejects after a random time in the range `millisecondsFrom` and `millisecondsTo`.
+
+	 @param millisecondsFrom - Lower bound of random number of milliseconds to delay the promise.
+	 @param millisecondsTo - Upper bound of random number of milliseconds to delay the promise.
+	 @returns A promise that resolves thereafter.
+	 */
+	reject(
+		millisecondsFrom: number,
+		millisecondsTo: number,
+		options?: delay.Options & {
+			/**
+			 Value to reject in the returned promise.
+			 */
 			value?: unknown;
 		}
 	): delay.ClearablePromise<never>;

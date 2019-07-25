@@ -6,7 +6,14 @@ const createAbortError = () => {
 	return error;
 };
 
-const createDelay = ({clearTimeout: defaultClear, setTimeout: set, willResolve}) => (ms, {value, signal} = {}) => {
+const createDelay = ({clearTimeout: defaultClear, setTimeout: set, willResolve}) => (ms, msRangeTo, {value, signal} = {}) => {
+	if (typeof msRangeTo === 'object') {
+		value = msRangeTo.value;
+		signal = msRangeTo.signal;
+	} else if (typeof msRangeTo === 'number') {
+		ms = Math.floor(Math.random() * (msRangeTo - ms + 1) + ms);
+	}
+
 	if (signal && signal.aborted) {
 		return Promise.reject(createAbortError());
 	}

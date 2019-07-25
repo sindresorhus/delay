@@ -32,15 +32,29 @@ const delay = require('delay');
 
 Create a promise which resolves after the specified `milliseconds`.
 
+### delay(millisecondsFrom, millisecondsTo, [options])
+
+Create a promise which resolves after a random time in the range [`milliseconds`, `millisecondsTo`).
+
 ### delay.reject(milliseconds, [options])
 
 Create a promise which rejects after the specified `milliseconds`.
+
+### delay.reject(millisecondsFrom, millisecondsTo, [options])
+
+Create a promise which rejects after a random time in the range [`milliseconds`, `millisecondsTo`).
 
 #### milliseconds
 
 Type: `number`
 
 Milliseconds to delay the promise.
+
+#### millisecondsFrom, millisecondsTo
+
+Type: `number`
+
+If provided, the promise will be delayed by a random number of milliseconds in the range [milliseconds, millisecondsTo).
 
 #### options
 

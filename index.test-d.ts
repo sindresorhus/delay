@@ -16,9 +16,12 @@ expectType<ClearablePromise<never>>(delay.reject(200, {value: 0}));
 
 const customDelay = delay.createWithTimers({clearTimeout, setTimeout});
 expectType<ClearablePromise<void>>(customDelay(200));
+expectType<ClearablePromise<void>>(customDelay(200, 400));
 
 expectType<ClearablePromise<string>>(customDelay(200, {value: '🦄'}));
 expectType<ClearablePromise<number>>(customDelay(200, {value: 0}));
+expectType<ClearablePromise<number>>(customDelay(200, 400, {value: 0}));
 
 expectType<ClearablePromise<never>>(customDelay.reject(200, {value: '🦄'}));
 expectType<ClearablePromise<never>>(customDelay.reject(200, {value: 0}));
+expectType<ClearablePromise<never>>(customDelay.reject(200, 400, {value: 0}));

@@ -13,6 +13,12 @@ test('returns a resolved promise', async t => {
 	t.true(inRange(end(), 30, 70), 'is delayed');
 });
 
+test('returns a resolved promise for delay range', async t => {
+	const end = timeSpan();
+	await m(30, 70);
+	t.true(inRange(end(), 10, 90), 'is delayed');
+});
+
 test('returns a rejected promise', async t => {
 	const end = timeSpan();
 	await t.throwsAsync(
@@ -20,6 +26,22 @@ test('returns a rejected promise', async t => {
 		'foo'
 	);
 	t.true(inRange(end(), 30, 70), 'is delayed');
+});
+
+test('returns a rejected promise for delay range', async t => {
+	const end = timeSpan();
+	await t.throwsAsync(
+		m.reject(50, {value: new Error('foo')}),
+		'foo'
+	);
+	t.true(inRange(end(), 10, 90), 'is delayed');
+});
+
+test('resolves with value and delay range', async t => {
+	t.is(
+		await m(50, 70, {value: 0}),
+		0
+	);
 });
 
 test('able to resolve a falsy value', async t => {
@@ -87,6 +109,17 @@ test('resolution can be aborted with an AbortSignal', async t => {
 	setTimeout(() => abortController.abort(), 1);
 	await t.throwsAsync(
 		m(1000, {signal: abortController.signal}),
+		{name: 'AbortError'}
+	);
+	t.true(end() < 30);
+});
+
+test('resolution can be aborted with an AbortSignal and delay range', async t => {
+	const end = timeSpan();
+	const abortController = new AbortController();
+	setTimeout(() => abortController.abort(), 1);
+	await t.throwsAsync(
+		m(5000, 1000, {signal: abortController.signal}),
 		{name: 'AbortError'}
 	);
 	t.true(end() < 30);
