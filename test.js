@@ -119,7 +119,7 @@ test('resolution can be aborted with an AbortSignal and delay range', async t =>
 	const abortController = new AbortController();
 	setTimeout(() => abortController.abort(), 1);
 	await t.throwsAsync(
-		m(5000, 1000, {signal: abortController.signal}),
+		m(1000, 5000, {signal: abortController.signal}),
 		{name: 'AbortError'}
 	);
 	t.true(end() < 30);

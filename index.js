@@ -11,7 +11,7 @@ const createDelay = ({clearTimeout: defaultClear, setTimeout: set, willResolve})
 		value = msRangeTo.value;
 		signal = msRangeTo.signal;
 	} else if (typeof msRangeTo === 'number') {
-		ms = Math.floor(Math.random() * (msRangeTo - ms + 1) + ms);
+		ms = Math.floor((Math.random() * (msRangeTo - ms + 1)) + ms);
 	}
 
 	if (signal && signal.aborted) {
