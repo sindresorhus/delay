@@ -48,7 +48,6 @@ const createDelay = ({clearTimeout: defaultClear, setTimeout: set, willResolve})
 	delayPromise.clear = () => {
 		clear(timeoutId);
 		timeoutId = null;
-		cleanup();
 		settle();
 	};
 
