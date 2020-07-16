@@ -1,5 +1,4 @@
 'use strict';
-
 const randomInteger = require('random-int');
 
 const createAbortError = () => {
