@@ -24,4 +24,3 @@ expectType<ClearablePromise<number>>(customDelay(200, {value: 0}));
 
 expectType<ClearablePromise<never>>(customDelay.reject(200, {value: '🦄'}));
 expectType<ClearablePromise<never>>(customDelay.reject(200, {value: 0}));
-
