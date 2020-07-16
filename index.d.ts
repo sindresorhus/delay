@@ -56,6 +56,24 @@ type Delay = {
 	): delay.ClearablePromise<T>;
 
 	/**
+	Create a promise which resolves after a random amount of milliseconds between `minimum` and `maximum` has passed.
+
+	@param minimum - Minimum amount of milliseconds to delay the promise.
+	@param maximum - Maximum amount of milliseconds to delay the promise.
+	@returns A promise which resolves after a random amount of milliseconds between `maximum` and `maximum` has passed.
+	*/
+	range<T>(
+		minimum: number,
+		maximum: number,
+		options?: delay.Options & {
+			/**
+			Value to resolve in the returned promise.
+			*/
+			value: T;
+		}
+	): delay.ClearablePromise<T>;
+
+	/**
 	Create a promise which rejects after the specified `milliseconds`.
 
 	@param milliseconds - Milliseconds to delay the promise.

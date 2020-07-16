@@ -1,5 +1,7 @@
 'use strict';
 
+const randomInteger = require('random-int');
+
 const createAbortError = () => {
 	const error = new Error('Delay aborted');
 	error.name = 'AbortError';
@@ -56,6 +58,7 @@ const createDelay = ({clearTimeout: defaultClear, setTimeout: set, willResolve})
 
 const delay = createDelay({willResolve: true});
 delay.reject = createDelay({willResolve: false});
+delay.range = (minimum, maximum, options) => delay(randomInteger(minimum, maximum), options);
 delay.createWithTimers = ({clearTimeout, setTimeout}) => {
 	const delay = createDelay({clearTimeout, setTimeout, willResolve: true});
 	delay.reject = createDelay({clearTimeout, setTimeout, willResolve: false});
