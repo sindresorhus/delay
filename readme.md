@@ -40,7 +40,9 @@ Create a promise which rejects after the specified `milliseconds`.
 
 Create a promise which resolves after a random amount of milliseconds between `minimum` and `maximum` has passed.
 
-#### milliseconds (minimum and maximum for delay.range)
+#### milliseconds
+#### mininum
+#### maximum
 
 Type: `number`
 
