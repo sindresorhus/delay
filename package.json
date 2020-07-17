@@ -38,9 +38,7 @@
 		"promises",
 		"bluebird"
 	],
-	"dependencies": {
-		"random-int": "^2.0.1"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"abort-controller": "^3.0.0",
 		"ava": "1.4.1",

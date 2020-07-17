@@ -1,6 +1,7 @@
 'use strict';
 
-const randomInteger = require('random-int');
+// https://github.com/sindresorhus/random-int/blob/c37741b56f76b9160b0b63dae4e9c64875128146/index.js#L13-L15
+const randomInteger = (minimum, maximum) => Math.floor((Math.random() * (maximum - minimum + 1)) + minimum);
 
 const createAbortError = () => {
 	const error = new Error('Delay aborted');
