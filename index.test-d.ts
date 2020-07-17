@@ -11,7 +11,7 @@ expectType<ClearablePromise<void>>(
 	delay(200, {signal: new AbortController().signal})
 );
 
-expectType<ClearablePromise<number>>(delay.range(50, 200, { value: 0 }));
+expectType<ClearablePromise<number>>(delay.range(50, 200, {value: 0}));
 
 expectType<ClearablePromise<never>>(delay.reject(200, {value: '🦄'}));
 expectType<ClearablePromise<never>>(delay.reject(200, {value: 0}));
@@ -24,4 +24,3 @@ expectType<ClearablePromise<number>>(customDelay(200, {value: 0}));
 
 expectType<ClearablePromise<never>>(customDelay.reject(200, {value: '🦄'}));
 expectType<ClearablePromise<never>>(customDelay.reject(200, {value: 0}));
-
