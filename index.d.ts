@@ -58,6 +58,8 @@ type Delay = {
 	/**
 	Create a promise which resolves after a random amount of milliseconds between `minimum` and `maximum` has passed.
 
+	Useful for testing and web scraping.
+
 	@param minimum - Minimum amount of milliseconds to delay the promise.
 	@param maximum - Maximum amount of milliseconds to delay the promise.
 	@returns A promise which resolves after a random amount of milliseconds between `maximum` and `maximum` has passed.

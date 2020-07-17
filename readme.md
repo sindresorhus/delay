@@ -40,6 +40,8 @@ Create a promise which rejects after the specified `milliseconds`.
 
 Create a promise which resolves after a random amount of milliseconds between `minimum` and `maximum` has passed.
 
+Useful for testing and web scraping.
+
 #### milliseconds
 #### mininum
 #### maximum
