@@ -38,7 +38,6 @@
 		"promises",
 		"bluebird"
 	],
-	"dependencies": {},
 	"devDependencies": {
 		"abort-controller": "^3.0.0",
 		"ava": "1.4.1",
