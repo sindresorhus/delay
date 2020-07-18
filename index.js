@@ -1,5 +1,8 @@
 'use strict';
 
+// From https://github.com/sindresorhus/random-int/blob/c37741b56f76b9160b0b63dae4e9c64875128146/index.js#L13-L15
+const randomInteger = (minimum, maximum) => Math.floor((Math.random() * (maximum - minimum + 1)) + minimum);
+
 const createAbortError = () => {
 	const error = new Error('Delay aborted');
 	error.name = 'AbortError';
@@ -56,6 +59,7 @@ const createDelay = ({clearTimeout: defaultClear, setTimeout: set, willResolve})
 
 const delay = createDelay({willResolve: true});
 delay.reject = createDelay({willResolve: false});
+delay.range = (minimum, maximum, options) => delay(randomInteger(minimum, maximum), options);
 delay.createWithTimers = ({clearTimeout, setTimeout}) => {
 	const delay = createDelay({clearTimeout, setTimeout, willResolve: true});
 	delay.reject = createDelay({clearTimeout, setTimeout, willResolve: false});

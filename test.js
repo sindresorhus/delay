@@ -163,3 +163,9 @@ test('can create a new instance with fixed timeout methods', async t => {
 	t.is(cleared.length, 1);
 	t.is(cleared[0], callbacks[2].handle);
 });
+
+test('returns a promise that is resolved in a random range of time', async t => {
+	const end = timeSpan();
+	await m.range(50, 150);
+	t.true(inRange(end(), 30, 170), 'is delayed');
+});

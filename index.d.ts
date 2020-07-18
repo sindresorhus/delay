@@ -56,6 +56,26 @@ type Delay = {
 	): delay.ClearablePromise<T>;
 
 	/**
+	Create a promise which resolves after a random amount of milliseconds between `minimum` and `maximum` has passed.
+
+	Useful for tests and web scraping since they can have unpredictable performance. For example, if you have a test that asserts a method should not take longer than a certain amount of time, and then run it on a CI, it could take longer. So with `.range()`, you could give it a threshold instead.
+
+	@param minimum - Minimum amount of milliseconds to delay the promise.
+	@param maximum - Maximum amount of milliseconds to delay the promise.
+	@returns A promise which resolves after a random amount of milliseconds between `maximum` and `maximum` has passed.
+	*/
+	range<T>(
+		minimum: number,
+		maximum: number,
+		options?: delay.Options & {
+			/**
+			Value to resolve in the returned promise.
+			*/
+			value: T;
+		}
+	): delay.ClearablePromise<T>;
+
+	/**
 	Create a promise which rejects after the specified `milliseconds`.
 
 	@param milliseconds - Milliseconds to delay the promise.
