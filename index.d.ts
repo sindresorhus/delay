@@ -75,13 +75,13 @@ type Delay = {
 		}
 	): delay.ClearablePromise<T>;
 
+	// TODO: Allow providing value type after https://github.com/Microsoft/TypeScript/issues/5413 is resolved.
 	/**
 	Create a promise which rejects after the specified `milliseconds`.
 
 	@param milliseconds - Milliseconds to delay the promise.
 	@returns A promise which rejects after the specified `milliseconds`.
 	*/
-	// TODO: Allow providing value type after https://github.com/Microsoft/TypeScript/issues/5413 will be resolved.
 	reject(
 		milliseconds: number,
 		options?: delay.Options & {
@@ -99,7 +99,7 @@ declare const delay: Delay & {
 		setTimeout: typeof setTimeout;
 	}): Delay;
 
-	// TODO: Remove this for the next major release
+	// TODO: Remove this for the next major release.
 	default: typeof delay;
 };
 

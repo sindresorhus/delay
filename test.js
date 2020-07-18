@@ -3,20 +3,20 @@ import timeSpan from 'time-span';
 import inRange from 'in-range';
 import currentlyUnhandled from 'currently-unhandled';
 import {AbortController} from 'abort-controller';
-import m from '.';
+import delay from '.';
 
 const getCurrentlyUnhandled = currentlyUnhandled();
 
 test('returns a resolved promise', async t => {
 	const end = timeSpan();
-	await m(50);
+	await delay(50);
 	t.true(inRange(end(), 30, 70), 'is delayed');
 });
 
 test('returns a rejected promise', async t => {
 	const end = timeSpan();
 	await t.throwsAsync(
-		m.reject(50, {value: new Error('foo')}),
+		delay.reject(50, {value: new Error('foo')}),
 		'foo'
 	);
 	t.true(inRange(end(), 30, 70), 'is delayed');
@@ -24,7 +24,7 @@ test('returns a rejected promise', async t => {
 
 test('able to resolve a falsy value', async t => {
 	t.is(
-		await m(50, {value: 0}),
+		await delay(50, {value: 0}),
 		0
 	);
 });
@@ -32,7 +32,7 @@ test('able to resolve a falsy value', async t => {
 test('able to reject a falsy value', async t => {
 	t.plan(1);
 	try {
-		await m.reject(50, {value: false});
+		await delay.reject(50, {value: false});
 	} catch (error) {
 		t.is(error, false);
 	}
@@ -40,15 +40,15 @@ test('able to reject a falsy value', async t => {
 
 test('delay defaults to 0 ms', async t => {
 	const end = timeSpan();
-	await m();
+	await delay();
 	t.true(end() < 30);
 });
 
 test('reject will cause an unhandledRejection if not caught', async t => {
 	const reason = new Error('foo');
-	const promise = m.reject(0, {value: reason});
+	const promise = delay.reject(0, {value: reason});
 
-	await m(10);
+	await delay(10);
 
 	t.deepEqual(getCurrentlyUnhandled(), [{
 		reason,
@@ -56,14 +56,14 @@ test('reject will cause an unhandledRejection if not caught', async t => {
 	}], 'Promise should be unhandled');
 
 	promise.catch(() => {});
-	await m(10);
+	await delay(10);
 
 	t.deepEqual(getCurrentlyUnhandled(), [], 'no unhandled rejections now');
 });
 
 test('can clear a delayed resolution', async t => {
 	const end = timeSpan();
-	const delayPromise = m(1000, {value: 'success!'});
+	const delayPromise = delay(1000, {value: 'success!'});
 
 	delayPromise.clear();
 	const success = await delayPromise;
@@ -74,7 +74,7 @@ test('can clear a delayed resolution', async t => {
 
 test('can clear a delayed rejection', async t => {
 	const end = timeSpan();
-	const delayPromise = m.reject(1000, {value: new Error('error!')});
+	const delayPromise = delay.reject(1000, {value: new Error('error!')});
 	delayPromise.clear();
 
 	await t.throwsAsync(delayPromise, /error!/);
@@ -86,7 +86,7 @@ test('resolution can be aborted with an AbortSignal', async t => {
 	const abortController = new AbortController();
 	setTimeout(() => abortController.abort(), 1);
 	await t.throwsAsync(
-		m(1000, {signal: abortController.signal}),
+		delay(1000, {signal: abortController.signal}),
 		{name: 'AbortError'}
 	);
 	t.true(end() < 30);
@@ -97,7 +97,7 @@ test('resolution can be aborted with an AbortSignal if a value is passed', async
 	const abortController = new AbortController();
 	setTimeout(() => abortController.abort(), 1);
 	await t.throwsAsync(
-		m(1000, {value: 123, signal: abortController.signal}),
+		delay(1000, {value: 123, signal: abortController.signal}),
 		{name: 'AbortError'}
 	);
 	t.true(end() < 30);
@@ -108,7 +108,7 @@ test('rejection can be aborted with an AbortSignal if a value is passed', async 
 	const abortController = new AbortController();
 	setTimeout(() => abortController.abort(), 1);
 	await t.throwsAsync(
-		m.reject(1000, {value: new Error(), signal: abortController.signal}),
+		delay.reject(1000, {value: new Error(), signal: abortController.signal}),
 		{name: 'AbortError'}
 	);
 	t.true(end() < 30);
@@ -119,7 +119,7 @@ test('rejects with AbortError if AbortSignal is already aborted', async t => {
 	const abortController = new AbortController();
 	abortController.abort();
 	await t.throwsAsync(
-		m(1000, {signal: abortController.signal}),
+		delay(1000, {signal: abortController.signal}),
 		{name: 'AbortError'}
 	);
 	t.true(end() < 30);
@@ -128,7 +128,7 @@ test('rejects with AbortError if AbortSignal is already aborted', async t => {
 test('can create a new instance with fixed timeout methods', async t => {
 	const cleared = [];
 	const callbacks = [];
-	const custom = m.createWithTimers({
+	const custom = delay.createWithTimers({
 		clearTimeout(handle) {
 			cleared.push(handle);
 		},
@@ -166,6 +166,6 @@ test('can create a new instance with fixed timeout methods', async t => {
 
 test('returns a promise that is resolved in a random range of time', async t => {
 	const end = timeSpan();
-	await m.range(50, 150);
+	await delay.range(50, 150);
 	t.true(inRange(end(), 30, 170), 'is delayed');
 });

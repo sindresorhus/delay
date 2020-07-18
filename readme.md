@@ -1,14 +1,12 @@
-# delay [![Build Status](https://travis-ci.org/sindresorhus/delay.svg?branch=master)](https://travis-ci.org/sindresorhus/delay)
+# delay [![Build Status](https://travis-ci.com/sindresorhus/delay.svg?branch=master)](https://travis-ci.com/github/sindresorhus/delay)
 
 > Delay a promise a specified amount of time
-
 
 ## Install
 
 ```
 $ npm install delay
 ```
-
 
 ## Usage
 
@@ -25,18 +23,17 @@ const delay = require('delay');
 })();
 ```
 
-
 ## API
 
-### delay(milliseconds, [options])
+### delay(milliseconds, options?)
 
 Create a promise which resolves after the specified `milliseconds`.
 
-### delay.reject(milliseconds, [options])
+### delay.reject(milliseconds, options?)
 
 Create a promise which rejects after the specified `milliseconds`.
 
-### delay.range(minimum, maximum, [options])
+### delay.range(minimum, maximum, options?)
 
 Create a promise which resolves after a random amount of milliseconds between `minimum` and `maximum` has passed.
 
@@ -52,11 +49,11 @@ Milliseconds to delay the promise.
 
 #### options
 
-Type: `Object`
+Type: `object`
 
 ##### value
 
-Type: `any`
+Type: `unknown`
 
 Optional value to resolve or reject in the returned promise.
 
@@ -164,7 +161,6 @@ const customDelay = delay.createWithTimers({clearTimeout, setTimeout});
 })();
 ```
 
-
 ## Related
 
 - [delay-cli](https://github.com/sindresorhus/delay-cli) - CLI for this module
@@ -173,8 +169,3 @@ const customDelay = delay.createWithTimers({clearTimeout, setTimeout});
 - [p-immediate](https://github.com/sindresorhus/p-immediate) - Returns a promise resolved in the next event loop - think `setImmediate()`
 - [p-timeout](https://github.com/sindresorhus/p-timeout) - Timeout a promise after a specified amount of time
 - [More…](https://github.com/sindresorhus/promise-fun)
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)
