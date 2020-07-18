@@ -36,7 +36,10 @@
 		"async",
 		"await",
 		"promises",
-		"bluebird"
+		"bluebird",
+		"threshold",
+		"range",
+		"random"
 	],
 	"devDependencies": {
 		"abort-controller": "^3.0.0",
