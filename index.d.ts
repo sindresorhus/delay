@@ -58,7 +58,7 @@ type Delay = {
 	/**
 	Create a promise which resolves after a random amount of milliseconds between `minimum` and `maximum` has passed.
 
-	Useful for tests and scraping since they can have unpredictable speed. For example, if you have a test that asserts a method should not take longer than a certain amount, and then run it on a CI, it could take longer. So with `.range()`, you could give it a threshold instead.
+	Useful for tests and web scraping since they can have unpredictable performance. For example, if you have a test that asserts a method should not take longer than a certain amount of time, and then run it on a CI, it could take longer. So with `.range()`, you could give it a threshold instead.
 
 	@param minimum - Minimum amount of milliseconds to delay the promise.
 	@param maximum - Maximum amount of milliseconds to delay the promise.
