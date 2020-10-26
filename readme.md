@@ -2,6 +2,8 @@
 
 > Delay a promise a specified amount of time
 
+*If you target [Node.js 15](https://medium.com/@nodejs/node-js-v15-0-0-is-here-deb00750f278) or later, you can do `await require('timers/promises').setTimeout(1000)` instead.*
+
 ## Install
 
 ```
