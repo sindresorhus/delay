@@ -1,4 +1,4 @@
-# delay [![Build Status](https://travis-ci.com/sindresorhus/delay.svg?branch=master)](https://travis-ci.com/github/sindresorhus/delay)
+# delay
 
 > Delay a promise a specified amount of time
 
