@@ -94,9 +94,10 @@ type Delay = {
 };
 
 declare const delay: Delay & {
+	// The types are intentionally loose to make it work with both Node.js and browser versions of these methods.
 	createWithTimers(timers: {
-		clearTimeout: typeof clearTimeout;
-		setTimeout: typeof setTimeout;
+		clearTimeout: (timeoutId: any) => void;
+		setTimeout: (callback: (...args: any[]) => void, milliseconds: number, ...args: any[]) => unknown;
 	}): Delay;
 
 	// TODO: Remove this for the next major release.
