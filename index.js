@@ -57,14 +57,15 @@ const createDelay = ({clearTimeout: defaultClear, setTimeout: set, willResolve})
 	return delayPromise;
 };
 
-const delay = createDelay({willResolve: true});
-delay.reject = createDelay({willResolve: false});
-delay.range = (minimum, maximum, options) => delay(randomInteger(minimum, maximum), options);
-delay.createWithTimers = ({clearTimeout, setTimeout}) => {
-	const delay = createDelay({clearTimeout, setTimeout, willResolve: true});
-	delay.reject = createDelay({clearTimeout, setTimeout, willResolve: false});
+const createWithTimers = clearAndSet => {
+	const delay = createDelay({...clearAndSet, willResolve: true});
+	delay.reject = createDelay({...clearAndSet, willResolve: false});
+	delay.range = (minimum, maximum, options) => delay(randomInteger(minimum, maximum), options);
 	return delay;
 };
+
+const delay = createWithTimers();
+delay.createWithTimers = createWithTimers;
 
 module.exports = delay;
 // TODO: Remove this for the next major release

@@ -125,6 +125,12 @@ test('rejects with AbortError if AbortSignal is already aborted', async t => {
 	t.true(end() < 30);
 });
 
+test('returns a promise that is resolved in a random range of time', async t => {
+	const end = timeSpan();
+	await delay.range(50, 150);
+	t.true(inRange(end(), 30, 170), 'is delayed');
+});
+
 test('can create a new instance with fixed timeout methods', async t => {
 	const cleared = [];
 	const callbacks = [];
@@ -162,10 +168,10 @@ test('can create a new instance with fixed timeout methods', async t => {
 	third.clear();
 	t.is(cleared.length, 1);
 	t.is(cleared[0], callbacks[2].handle);
-});
 
-test('returns a promise that is resolved in a random range of time', async t => {
-	const end = timeSpan();
-	await delay.range(50, 150);
-	t.true(inRange(end(), 30, 170), 'is delayed');
+	const fourth = custom.range(50, 150, {value: 'fourth'});
+	t.is(callbacks.length, 4);
+	t.true(inRange(callbacks[2].ms, 50, 150));
+	callbacks[3].callback();
+	t.is(await fourth, 'fourth');
 });
