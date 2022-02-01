@@ -42,6 +42,9 @@
 		"range",
 		"random"
 	],
+	"dependencies": {
+		"random-int": "^3.0.0"
+	},
 	"devDependencies": {
 		"abort-controller": "^3.0.0",
 		"ava": "1.4.1",
