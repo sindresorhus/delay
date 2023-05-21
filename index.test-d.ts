@@ -1,33 +1,25 @@
-/// <reference lib="dom"/>
 import {expectType} from 'tsd';
-import delay = require('.');
-import {ClearablePromise} from '.';
+import delay, {rangeDelay, createDelay} from './index.js';
 
-expectType<ClearablePromise<void>>(delay(200));
+expectType<Promise<void>>(delay(200));
 
-expectType<ClearablePromise<string>>(delay(200, {value: '🦄'}));
-expectType<ClearablePromise<number>>(delay(200, {value: 0}));
-expectType<ClearablePromise<void>>(
-	delay(200, {signal: new AbortController().signal})
+expectType<Promise<string>>(delay(200, {value: '🦄'}));
+expectType<Promise<number>>(delay(200, {value: 0}));
+expectType<Promise<void>>(
+	delay(200, {signal: new AbortController().signal}),
 );
 
-expectType<ClearablePromise<number>>(delay.range(50, 200, {value: 0}));
+expectType<Promise<number>>(rangeDelay(50, 200, {value: 0}));
 
-expectType<ClearablePromise<never>>(delay.reject(200, {value: '🦄'}));
-expectType<ClearablePromise<never>>(delay.reject(200, {value: 0}));
+const customDelay = createDelay({clearTimeout, setTimeout});
+expectType<Promise<void>>(customDelay(200));
 
-const customDelay = delay.createWithTimers({clearTimeout, setTimeout});
-expectType<ClearablePromise<void>>(customDelay(200));
+expectType<Promise<string>>(customDelay(200, {value: '🦄'}));
+expectType<Promise<number>>(customDelay(200, {value: 0}));
 
-expectType<ClearablePromise<string>>(customDelay(200, {value: '🦄'}));
-expectType<ClearablePromise<number>>(customDelay(200, {value: 0}));
-
-expectType<ClearablePromise<never>>(customDelay.reject(200, {value: '🦄'}));
-expectType<ClearablePromise<never>>(customDelay.reject(200, {value: 0}));
-
-const unrefDelay = delay.createWithTimers({
+const unrefDelay = createDelay({
 	clearTimeout,
-	setTimeout(...args) {
-		return setTimeout(...args).unref()
+	setTimeout(...arguments_) {
+		return setTimeout(...arguments_).unref();
 	},
 });

@@ -10,8 +10,13 @@
 		"email": "sindresorhus@gmail.com",
 		"url": "https://sindresorhus.com"
 	},
+	"type": "module",
+	"exports": {
+		"types": "./index.d.ts",
+		"default": "./index.js"
+	},
 	"engines": {
-		"node": ">=10"
+		"node": ">=16"
 	},
 	"scripts": {
 		"test": "xo && ava && tsd"
@@ -43,12 +48,13 @@
 		"random"
 	],
 	"devDependencies": {
-		"abort-controller": "^3.0.0",
-		"ava": "1.4.1",
-		"currently-unhandled": "^0.4.1",
-		"in-range": "^1.0.0",
-		"time-span": "^3.0.0",
-		"tsd": "^0.7.1",
-		"xo": "^0.24.0"
+		"ava": "5.2.0",
+		"in-range": "^3.0.0",
+		"time-span": "^5.1.0",
+		"tsd": "^0.28.1",
+		"xo": "^0.54.2"
+	},
+	"ava": {
+		"serial": true
 	}
 }
