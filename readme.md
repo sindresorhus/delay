@@ -2,7 +2,7 @@
 
 > Delay a promise a specified amount of time
 
-*If you target Node.js 16 or later, you can use `import {setTimeout} from 'node:timers/promises'; await setTimeout(1000);` instead. This package can still be useful if you need browser support or the extra features.*
+*If you target Node.js only, you can use `import {setTimeout} from 'node:timers/promises'; await setTimeout(1000);` instead. This package can still be useful if you need browser support or the extra features.*
 
 ## Install
 
