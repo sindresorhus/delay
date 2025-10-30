@@ -1,20 +1,13 @@
 import {setTimeout as safeSetTimeout, clearTimeout as safeClearTimeout} from 'unlimited-timeout';
 import randomInteger from 'random-int';
 
-const createAbortError = () => {
-	const error = new Error('Delay aborted');
-	error.name = 'AbortError';
-	return error;
-};
-
 const clearMethods = new WeakMap();
 
 export function createDelay({clearTimeout: defaultClear, setTimeout: defaultSet} = {}) {
 	// We cannot use `async` here as we need the promise identity.
 	return (milliseconds, {value, signal} = {}) => {
-		// TODO: Use `signal?.throwIfAborted()` when targeting Node.js 18.
 		if (signal?.aborted) {
-			return Promise.reject(createAbortError());
+			return Promise.reject(signal.reason);
 		}
 
 		let timeoutId;
@@ -24,7 +17,7 @@ export function createDelay({clearTimeout: defaultClear, setTimeout: defaultSet}
 
 		const signalListener = () => {
 			clear(timeoutId);
-			rejectFunction(createAbortError());
+			rejectFunction(signal.reason);
 		};
 
 		const cleanup = () => {
@@ -61,7 +54,7 @@ const delay = createDelay({setTimeout: safeSetTimeout, clearTimeout: safeClearTi
 
 export default delay;
 
-export async function rangeDelay(minimum, maximum, options = {}) {
+export async function rangeDelay(minimum, maximum, options) {
 	return delay(randomInteger(minimum, maximum), options);
 }
 

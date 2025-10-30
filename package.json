@@ -15,11 +15,12 @@
 		"types": "./index.d.ts",
 		"default": "./index.js"
 	},
+	"sideEffects": false,
 	"engines": {
-		"node": ">=16"
+		"node": ">=20"
 	},
 	"scripts": {
-		"test": "xo && ava && tsd"
+		"test": "xo && node --test && tsd"
 	},
 	"files": [
 		"index.js",
@@ -52,13 +53,9 @@
 		"unlimited-timeout": "^0.1.0"
 	},
 	"devDependencies": {
-		"ava": "5.2.0",
 		"in-range": "^3.0.0",
 		"time-span": "^5.1.0",
-		"tsd": "^0.28.1",
-		"xo": "^0.54.2"
-	},
-	"ava": {
-		"serial": true
+		"tsd": "^0.33.0",
+		"xo": "^1.2.3"
 	}
 }
