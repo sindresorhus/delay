@@ -45,7 +45,7 @@ export type Options<T> = {
 /**
 Create a promise which resolves after the specified `milliseconds`.
 
-@param milliseconds - Milliseconds to delay the promise.
+@param milliseconds - Milliseconds to delay the promise. Unlike native `setTimeout`, this supports unlimited delay length.
 @returns A promise which resolves after the specified `milliseconds`.
 
 @example

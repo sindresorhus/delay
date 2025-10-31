@@ -1,5 +1,5 @@
-// From https://github.com/sindresorhus/random-int/blob/c37741b56f76b9160b0b63dae4e9c64875128146/index.js#L13-L15
-const randomInteger = (minimum, maximum) => Math.floor((Math.random() * (maximum - minimum + 1)) + minimum);
+import {setTimeout as safeSetTimeout, clearTimeout as safeClearTimeout} from 'unlimited-timeout';
+import randomInteger from 'random-int';
 
 const createAbortError = () => {
 	const error = new Error('Delay aborted');
@@ -57,7 +57,7 @@ export function createDelay({clearTimeout: defaultClear, setTimeout: defaultSet}
 	};
 }
 
-const delay = createDelay();
+const delay = createDelay({setTimeout: safeSetTimeout, clearTimeout: safeClearTimeout});
 
 export default delay;
 

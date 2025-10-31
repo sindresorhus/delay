@@ -43,6 +43,8 @@ Type: `number`
 
 Milliseconds to delay the promise.
 
+Unlike native `setTimeout`, this supports unlimited delay length.
+
 #### options
 
 Type: `object`
@@ -126,6 +128,7 @@ console.log(result);
 ## Related
 
 - [delay-cli](https://github.com/sindresorhus/delay-cli) - CLI for this module
+- [unlimited-timeout](https://github.com/sindresorhus/unlimited-timeout) - `setTimeout`/`setInterval` that works with delays longer than 24.8 days
 - [p-cancelable](https://github.com/sindresorhus/p-cancelable) - Create a promise that can be canceled
 - [p-min-delay](https://github.com/sindresorhus/p-min-delay) - Delay a promise a minimum amount of time
 - [p-immediate](https://github.com/sindresorhus/p-immediate) - Returns a promise resolved in the next event loop - think `setImmediate()`
